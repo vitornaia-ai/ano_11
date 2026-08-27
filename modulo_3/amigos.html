@@ -1,0 +1,514 @@
+﻿<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amigos Milionários - Tour Radical Global</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            color: #333;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            padding: 30px;
+            overflow: hidden;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #3498db;
+        }
+
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            color: #7f8c8d;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+
+        .intro {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #34495e;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 40px;
+        }
+
+        .friend-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .friend-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .friend-image {
+            width: 100%;
+            height: 200px;
+            background-color: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 5rem;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .friend-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .friend-card:hover .friend-image img {
+            transform: scale(1.05);
+        }
+
+        .play-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 3rem;
+            color: white;
+            opacity: 0.8;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            transition: opacity 0.3s ease;
+        }
+
+        .friend-image:hover .play-icon {
+            opacity: 1;
+        }
+
+        .friend-info {
+            padding: 20px;
+        }
+
+        .friend-name {
+            font-size: 1.4rem;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .friend-details {
+            color: #7f8c8d;
+            line-height: 1.5;
+        }
+
+        .friend-country {
+            display: inline-block;
+            background: #e8f4fc;
+            color: #3498db;
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            margin-top: 10px;
+        }
+
+        .friend-fortune {
+            color: #27ae60;
+            font-weight: bold;
+            margin-top: 10px;
+            font-size: 1.1rem;
+        }
+
+        .friend-prov {
+          margin-top: 10px;
+          color: #7f8c8d;
+          line-height: 1.5;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal.show {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            width: 80%;
+            max-width: 900px;
+            background: #222;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .modal-video {
+            width: 100%;
+            height: 0;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            position: relative;
+        }
+
+        .modal-video video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            background: rgba(0, 0, 0, 0.5);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1001;
+        }
+
+        .close-modal:hover {
+            background: rgba(0, 0, 0, 0.7);
+        }
+
+        @media (max-width: 768px) {
+            .gallery {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                width: 95%;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Os 10 Amigos Milionários</h1>
+            <p class="subtitle">Conheça os participantes do Tour Radical Global</p>
+        </header>
+
+        <div class="intro">
+            <p>Estes 10 amigos milionários reuniram-se em Portugal para uma aventura única: aprender Excel enquanto praticam desportos radicais ao redor do mundo. Cada um deles é especialista em um desporto radical diferente e irá apresentar sua emocionante atividade ao grupo.</p>
+        </div>
+
+        <div class="gallery">
+            <!-- Amigo 1 -->
+            <div class="friend-card">
+                <div class="friend-image" onclick="openModal('sky-surfing')">
+                    <div class="play-icon">
+                        <img src="assets/fotos/Chloe.png">
+                    </div>
+                </div>
+                <div class="friend-info">
+                    <h3 class="friend-name">Chloe "Sky" Sterling</h3>
+                    <p class="friend-details">Cabelo platinado curto, olhos azuis claros, corpo atlético de ginasta, pulseira de opala</p>
+                    <span class="friend-country">Sydney - Austrália</span>
+                    <p class="friend-fortune">Fortuna: €900 milhões</p>
+                    <p class="friend-prov">Proveniência: Minas de opala</p>
+                </div>
+            </div>
+
+            <!-- Amigo 2 -->
+            <div class="friend-card">
+                <div class="friend-image" onclick="openModal('big-wave')">
+                  <div class="play-icon">
+                      <img src="assets/fotos/Tane.png">
+                  </div>
+                </div>
+                <div class="friend-info">
+                    <h3 class="friend-name">Tane "Manaia" Waititi</h3>
+                    <p class="friend-details">Maori com tatuagem facial tradicional, físico imponente, sorriso fácil</p>
+                    <span class="friend-country">Auckland - Nova Zelândia</span>
+                    <p class="friend-fortune">Fortuna: €1.2 mil milhões</p>
+                    <p class="friend-prov">Proveniência: Empresas de software de IA</p>
+                </div>
+            </div>
+
+            <!-- Amigo 3 -->
+            <div class="friend-card">
+                <div class="friend-image" onclick="openModal('heli-ski')">
+                  <div class="play-icon">
+                      <img src="assets/fotos/Jacques.png">
+                  </div>
+                </div>
+                <div class="friend-info">
+                    <h3 class="friend-name">Jacques "Frost" LaRue</h3>
+                    <p class="friend-details">Alto, barba ruiva bem aparada, usa colar de prata com pinheiro</p>
+                    <span class="friend-country">Toronto - Canadá</span>
+                    <p class="friend-fortune">Fortuna: €850 milhões</p>
+                    <p class="friend-prov">Proveniência: Indústrias de madeira</p>
+                </div>
+            </div>
+
+            <!-- Amigo 4 -->
+            <div class="friend-card">
+                <div class="friend-image" onclick="openModal('cave-exploring')">
+                  <div class="play-icon">
+                      <img src="assets/fotos/Ana.png">
+                  </div>
+                </div>
+                <div class="friend-info">
+                    <h3 class="friend-name">Ana "Jaguar" Silva</h3>
+                    <p class="friend-details">Cabelos negros longos, olhos castanhos intensos, energia contagiante</p>
+                    <span class="friend-country">São Paulo - Brasil</span>
+                    <p class="friend-fortune">Fortuna: €1.5 mil milhões</p>
+                    <p class="friend-prov">Proveniência: Jazidas de nióbio</p>
+                </div>
+            </div>
+
+            <!-- Amigo 5 -->
+            <div class="friend-card">
+                <div class="friend-image" onclick="openModal('supercar')">
+                  <div class="play-icon">
+                      <img src="assets/fotos/Khalid.png">
+                  </div>
+                </div>
+                <div class="friend-info">
+                    <h3 class="friend-name">Khalid Al-Fayed</h3>
+                    <p class="friend-details">Veste thobe branco, óculos de sol de ouro, calmo e metódico</p>
+                    <span class="friend-country">Dubai - Emirados Árabes Unidos</span>
+                    <p class="friend-fortune">Fortuna: €3.2 mil milhões</p>
+                    <p class="friend-prov">Proveniência: Poços de petróleo</p>
+                </div>
+            </div>
+
+            <!-- Amigo 6 -->
+            <div class="friend-card">
+                <div class="friend-image" onclick="openModal('ice-climbing')">
+                  <div class="play-icon">
+                      <img src="assets/fotos/Yuki.png">
+                  </div>
+                </div>
+                <div class="friend-info">
+                    <h3 class="friend-name">Yuki "Yama" Tanaka</h3>
+                    <p class="friend-details">Estilo harajuku misturado com roupa técnica, cabelo roxo, sorriso tímido mas determinado</p>
+                    <span class="friend-country">Tóquio - Japão</span>
+                    <p class="friend-fortune">Fortuna: €700 milhões</p>
+                    <p class="friend-prov">Proveniência: Empresas multimédia de anime</p>
+                </div>
+            </div>
+
+            <!-- Amigo 7 -->
+            <div class="friend-card">
+                <div class="friend-image" onclick="openModal('sandboarding')">
+                  <div class="play-icon">
+                      <img src="assets/fotos/Amir.png">
+                  </div>
+                </div>
+                <div class="friend-info">
+                    <h3 class="friend-name">Amir "Sekhem" Hassan</h3>
+                    <p class="friend-details">Bronzeado perfeito, usa kufiyyah (lenço árabe) estilizado, olhar misterioso</p>
+                    <span class="friend-country">Cairo - Egito</span>
+                    <p class="friend-fortune">Fortuna: €1.1 mil milhões</p>
+                    <p class="friend-prov">Proveniência: Empresas de turismo de luxo</p>
+                </div>
+            </div>
+
+            <!-- Amigo 8 -->
+            <div class="friend-card">
+                <div class="friend-image" onclick="openModal('rafting')">
+                  <div class="play-icon">
+                      <img src="assets/fotos/Naledi.png">
+                  </div>
+                </div>
+                <div class="friend-info">
+                    <h3 class="friend-name">Naledi "Duma" Bhengu</h3>
+                    <p class="friend-details">Altiva, usa cores vibrantes, cabelo com rastas</p>
+                    <span class="friend-country">Joanesburgo - África do Sul</span>
+                    <p class="friend-fortune">Fortuna: €950 milhões</p>
+                    <p class="friend-prov">Proveniência: Minas de diamantes</p>
+                </div>
+            </div>
+
+            <!-- Amigo 9 -->
+            <div class="friend-card">
+                <div class="friend-image" onclick="openModal('mountaineering')">
+                  <div class="play-icon">
+                      <img src="assets/fotos/Klaus.png">
+                  </div>
+                </div>
+                <div class="friend-info">
+                    <h3 class="friend-name">Klaus "Gams" Richter</h3>
+                    <p class="friend-details">Cabelo grisalho, físico esguio mas forte, veste-se com casacos de alta qualidade</p>
+                    <span class="friend-country">Zurique - Suíça</span>
+                    <p class="friend-fortune">Fortuna: €2 mil milhões</p>
+                    <p class="friend-prov">Proveniência: Empresas de relógios de luxo</p>
+                </div>
+            </div>
+
+            <!-- Amigo 10 -->
+            <div class="friend-card">
+                <div class="friend-image" onclick="openModal('coasteering')">
+                  <div class="play-icon">
+                      <img src="assets/fotos/Joao.png">
+                  </div>
+                </div>
+                <div class="friend-info">
+                    <h3 class="friend-name">João "Lobo" Monteiro</h3>
+                    <p class="friend-details">Bronzeado, olhos verdes, ar descontraído</p>
+                    <span class="friend-country">Lisboa - Portugal</span>
+                    <p class="friend-fortune">Fortuna: €800 milhões</p>
+                    <p class="friend-prov">Proveniência: Fábrica de cortiças</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>© 2023 Tour Radical Global - Aprenda Excel com 10 Amigos Milionários e Desportos Extremos!</p>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal" id="videoModal">
+        <div class="close-modal" onclick="closeModal()">
+            <i class="fas fa-times"></i>
+        </div>
+        <div class="modal-content">
+            <div class="modal-video">
+                <video id="modalVideo" controls autoplay>
+                    <source src="" type="video/mp4">
+                    Seu navegador não suporta vídeos HTML5.
+                </video>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openModal(videoType) {
+            const modal = document.getElementById('videoModal');
+            const video = document.getElementById('modalVideo');
+
+            // Definir a fonte do vídeo com base no tipo (na prática, você teria URLs reais)
+            let videoSource = "";
+            switch(videoType) {
+                case 'sky-surfing':
+                    videoSource = "assets/videos/Chloe.mp4";
+                    break;
+                case 'big-wave':
+                  videoSource = "assets/videos/Tane.mp4";
+                    break;
+                case 'heli-ski':
+                    videoSource = "assets/videos/Jaques.mp4";
+                    break;
+                case 'cave-exploring':
+                  videoSource = "assets/videos/Ana.mp4";
+                    break;
+                case 'supercar':
+                    videoSource = "assets/videos/Khalid.mp4";
+                    break;
+                case 'ice-climbing':
+                    videoSource = "assets/videos/Yuki.mp4";
+                    break;
+                case 'sandboarding':
+                    videoSource = "assets/videos/Amir.mp4";
+                    break;
+                case 'rafting':
+                    videoSource = "assets/videos/Naledi.mp4";
+                    break;
+                case 'mountaineering':
+                  videoSource = "assets/videos/Klaus.mp4";
+                    break;
+                case 'coasteering':
+                    videoSource = "assets/videos/Joao.mp4";
+                    break;
+                default:
+                    videoSource = "assets/videos/a0.mp4";
+            }
+
+            video.src = videoSource;
+            modal.classList.add('show');
+
+            // Impedir que o body faça scroll quando o modal estiver aberto
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('videoModal');
+            const video = document.getElementById('modalVideo');
+
+            modal.classList.remove('show');
+            video.pause();
+
+            // Permitir scroll novamente
+            document.body.style.overflow = 'auto';
+        }
+
+        // Fechar o modal se o usuário clicar fora do conteúdo
+        window.onclick = function(event) {
+            const modal = document.getElementById('videoModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+    </script>
+</body>
+</html>

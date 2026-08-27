@@ -1,0 +1,179 @@
+﻿<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- jQuery (IMPORTANTE: Carregar antes do Bootstrap JS) -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<div class="card shadow mb-4" style="width:100%;">
+    <div class="card-header bg-primary text-white">
+        <h2><i class="fas fa-chalkboard-teacher"></i> Aula 4: Base de Dados dos Desportos Radicais</h2>
+    </div>
+    <div class="card-body">
+        <h4><i class="fas fa-flag-checkered"></i> Objetivo</h4>
+        <p class="lead">Criar uma lista estruturada com os dados dos desportos radicais.</p>
+
+        <h4><i class="fas fa-book"></i> Explicação</h4>
+        Vamos criar uma lista com os desportos radicais dos 10 amigos milionários. Esta lista contém várias linhas que vão registar o desporto e o equipamento que é necessário comprar para o praticar e cada coluna identifica o tipo de dado que vai guardar (<b>nome do desporto, equipamento, preço mais caro</b>).<p>
+                    <h4><i class="fas fa-table"></i> Base de Dados</h4>
+            <style>
+.table-striped tbody tr:nth-child(odd) {
+    background-color: #dc3545;
+    color: white;
+}
+
+.table-striped tbody tr:nth-child(even) {
+    background-color: #e4606d;
+    color: white;
+}
+
+.table-striped thead {
+    background-color: #000;
+    color: white;
+}
+</style>
+
+<table  class="table-bordered table-striped" width="100%">
+            <thead>
+                <tr>
+                    <th>Nome do Desporto</th>
+                    <th>Equipamento</th>
+                    <th>Preço Mais Caro</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Wingsuit Flying</td>
+                    <td>Wingsuit</td>
+                    <td>€2.500,00</td>
+                </tr>
+                <tr>
+                    <td>Wingsuit Flying</td>
+                    <td>Paraquedas Principal</td>
+                    <td>€7.000,00</td>
+                </tr>
+<tr>
+                    <td>Big Wave Surf</td>
+                    <td>Prancha de Big Wave (gun)</td>
+                    <td>€3.000,00</td>
+                </tr>
+                <tr>
+                    <td>Big Wave Surf</td>
+                    <td>Roupa de Isolamento Térmico</td>
+                    <td>€1.500,00</td>
+                </tr>
+            </tbody>
+        </table><p>        
+        
+        <h4><i class="fas fa-tasks"></i> Atividade</h4>
+        <ol>
+<li>Vai assumir o papel do amigo milionário que vai tentar convencer os outros a irem praticar o seu desporto.</li>
+<li>Pesquise sobre o Desporto Radical indicado na tabela abaixo.</li>
+<p><p>
+<table  class="table table-bordered table-striped w-75">
+            <thead class="table-dark">
+
+    <tr>
+      <th>Grupo</th>
+      <th>Desporto Radical</th>
+      <th>Amigo</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>Wingsuit Flying</td>
+      <td>Chloe&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <img src="assets/fotos/Chloe.png" style="width: 10% !important;"></td>
+
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Big Wave Surf</td>
+      <td>Tane&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="assets/fotos/Tane.png" style="width: 10% !important;"></td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>Big Mountain Skiing</td>
+      <td>Jaques&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="assets/fotos/Jacques.png" style="width: 10% !important;"></td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>Espeleologia Vertical</td>
+      <td>Ana &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="assets/fotos/Ana.png" style="width: 10% !important;"></td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>Pilotagem de Supercarros</td>
+      <td>Khalid&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="assets/fotos/Khalid.png" style="width: 10% !important;"></td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>Ice Climbing</td>
+      <td>Yuki &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="assets/fotos/Yuki.png" style="width: 10% !important;"></td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>Sand Boarding</td>
+      <td>Amir&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="assets/fotos/Amir.png" style="width: 10% !important;"></td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>Rafting</td>
+      <td>Naledi&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="assets/fotos/Naledi.png" style="width: 10% !important;"></td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>Alpinismo</td>
+      <td>Klaus&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="assets/fotos/Klaus.png" style="width: 10% !important;"></td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td>Cliff Diving </td>
+      <td>João&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="assets/fotos/Joao.png" style="width: 10% !important;"></td>
+    </tr>
+  </tbody>
+</table>
+<p>
+<li>Os pontos a pesquisar são:
+<ol>
+<li>O que é o [Desporto Radical].</li>
+<li>Imagens do [Desporto Radical].</li>
+<li>Equipamento que é necessário para praticar o [Desporto Radical] e preço do equipamento mais caro.</li>
+<li>Um vídeo sobre o [Desporto Radical].</li>
+</ol>
+</li>
+<li><font color="red" size="3.5em">Crie uma apresentação sobre o [Desporto Radical] seguindo os passos da seção seguinte.</font></li> 
+<p>
+                  <h4><i class="fas fa-cogs"></i>Passos</h4>
+          <ol><li>Aceda ao LMArena.ai</li>
+<li>Escreva o seguinte prompt para ajudar no desenvolvimento da apresentação:</li>
+<table  class="table table-bordered table-striped">
+<tr><td>
+<font color="red" size="3.5em">Assuma o papel de um aluno do 11º ano e desenvolva uma apresentação para o PowerPoint que apresente o seguinte Desporto Radical: [Desporto Radical]. A apresentação deverá ter 8 diapositivos. O 1º será a capa, o 2º explica o que é o desporto, o 3º explica como se pratica, o 4º mostra imagens sobre o desporto, o 5º indica qual é o equipamento necessário para o praticar e o preço mais caro do equipamento, o 6º indicará um link para o vídeo mais visto desse desporto, o 7º mostra a tua opinião porque esse deve ser o desporto que todos os amigos devem experimentar praticar e o 8º indica as fontes de consulta que foram utilizadas para construir o trabalho.</font>
+</td></tr></table>
+<li>Crie uma apresentação em branco no PowerPoint Online.</li>
+<li>Construa a apresentação que considerou melhor no LMArena.</li>
+<li>Aceda ao Microsoft Designer (https://designer.microsoft.com/)</li>
+<li>Selecione a opção "Imagens".</li>
+<li>Escreva o seguinte prompt para ajudar no desenvolvimento da capa da apresentação:</li>
+<table  class="table table-bordered table-striped">
+<tr><td>
+<font color="red" size="3.5em">Desenvolva um retrato de um desportista que pratica [Desporto Radical] equipado com [Equipamento do Desporto Radical], [Praticando o Desporto Radical] no [Ambiente do Desporto Radical].</font>
+</td></tr></table>
+<li>Edite a imagem criada pela AI e modifique-o ao seu gosto e depois faça o download para inseri-la na apresentação.</li>
+<li>A apresentação final deve ter a estrutura semelhante ao da imagem a seguir:</li>
+<img src="assets/img/doc_cliff.jpg" width="75%"/> 
+<li>Guarde a apresentação no Onedrive com o nome "[Desporto Radical]".</li> 
+</ol>
+<p><p>        
+        <h4><i class="fas fa-question-circle"></i> Próxima Aula</h4>
+        <div class="quiz-container bg-light p-4 rounded">
+            <p><strong><p align="center">Todos os grupos vão ser chamados para apresentar o seu Desporto Radical.</strong></p>
+
+        </div>
+    </div>
+</div>

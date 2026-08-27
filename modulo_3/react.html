@@ -1,0 +1,127 @@
+﻿<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestão de Lições - React</title>
+    
+    <!-- 1. Carregar o React e ReactDOM via CDN -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    
+    <!-- 2. Carregar o Babel para traduzir JSX no browser -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- 3. Estilos básicos (pode usar Tailwind via CDN para prototipar rápido) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 font-sans">
+
+    <!-- Ponto onde a aplicação React será injetada -->
+    <div id="root"></div>
+
+    <!-- 4. O seu código React em JavaScript (tipo text/babel) -->
+    <script type="text/babel">
+        function App() {
+            // Estado para gerir o conteúdo da lição ou interatividade
+            const [secaoAtiva, setSecaoAtiva] = React.useState(1);
+
+            return (
+                <div className="max-w-4xl mx-auto p-6">
+                    <header className="bg-blue-600 text-white p-6 rounded-lg shadow-md mb-6">
+                        <h1 className="text-2xl font-bold">Módulo de TIC: Lição Interativa</h1>
+                        <p className="text-blue-100">Ensino Secundário Profissional</p>
+                    </header>
+
+                    {/* Navegação entre secções da lição */}
+                    <div className="flex gap-2 mb-6">
+                        <button 
+                            onClick={() => setSecaoAtiva(1)}
+                            className={`px-4 py-2 rounded font-medium ${secaoAtiva === 1 ? 'bg-blue-600 text-white' : 'bg-white text-gray-700 border'}`}
+                        >
+                            1. Introdução
+                        </button>
+                        <button 
+                            onClick={() => setSecaoAtiva(2)}
+                            className={`px-4 py-2 rounded font-medium ${secaoAtiva === 2 ? 'bg-blue-600 text-white' : 'bg-white text-gray-700 border'}`}
+                        >
+                            2. Exercício Prático
+                        </button>
+                        <button 
+                            onClick={() => setSecaoAtiva(3)}
+                            className={`px-4 py-2 rounded font-medium ${secaoAtiva === 3 ? 'bg-blue-600 text-white' : 'bg-white text-gray-700 border'}`}
+                        >
+                            3. Avaliação / Quiz
+                        </button>
+                    </div>
+
+                    {/* Conteúdo Dinâmico com base na secção ativa */}
+                    <main className="bg-white p-6 rounded-lg shadow-md">
+                        {secaoAtiva === 1 && (
+                            <div>
+                                <h2 className="text-xl font-semibold mb-3 text-gray-800">Objetivos da Lição</h2>
+                                <p className="text-gray-600 mb-4">
+                                    N esta lição vamos explorar os conceitos fundamentais e aplicar as boas práticas de desenvolvimento e organização de dados.
+                                </p>
+                                <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 text-yellow-700">
+                                    <strong>Nota importante:</strong> Certifique-se de submeter os exercícios práticos na pasta partilhada da disciplina.
+                                </div>
+                            </div>
+                        )}
+
+                        {secaoAtiva === 2 && (
+                            <div>
+                                <h2 className="text-xl font-semibold mb-3 text-gray-800">Atividade Prática</h2>
+                                <p className="text-gray-600 mb-4">Desenvolva o diagrama ou script solicitado com base nos parâmetros apresentados em aula.</p>
+                                <div className="border border-dashed border-gray-300 p-6 text-center rounded text-gray-500">
+                                    Área interativa para simulação ou código do aluno.
+                                </div>
+                            </div>
+                        )}
+
+                        {secaoAtiva === 3 && (
+                            <div>
+                                <h2 className="text-xl font-semibold mb-3 text-gray-800">Questionário de Autoavaliação</h2>
+                                <p className="text-gray-600 mb-4">Responda às questões para validar os conhecimentos adquiridos.</p>
+                                {/* Exemplo simples de interatividade com estado */}
+                                <QuizComponent />
+                            </div>
+                        )}
+                    </main>
+                </div>
+            );
+        }
+
+        // Componente secundário (exemplo de interatividade)
+        function QuizComponent() {
+            const [resposta, setResposta] = React.useState(null);
+
+            return (
+                <div className="space-y-4">
+                    <p className="font-medium text-gray-700">Qual é a principal vantagem de normalizar uma base de dados?</p>
+                    <div className="space-y-2">
+                        <button 
+                            onClick={() => setResposta('errado')}
+                            className="block w-full text-left p-3 border rounded hover:bg-gray-50"
+                        >
+                            A) Aumentar a redundância de dados.
+                        </button>
+                        <button 
+                            onClick={() => setResposta('certo')}
+                            className="block w-full text-left p-3 border rounded hover:bg-gray-50"
+                        >
+                            B) Evitar anomalias e eliminar redundâncias desnecessárias.
+                        </button>
+                    </div>
+
+                    {resposta === 'certo' && <p className="text-green-600 font-semibold">Correto! Excelente raciocínio.</p>}
+                    {resposta === 'errado' && <p className="text-red-600 font-semibold">Incorreto. Reveja os princípios de normalização.</p>}
+                </div>
+            );
+        }
+
+        // Renderizar a aplicação no elemento root
+        ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+    </script>
+</body>
+</html>
