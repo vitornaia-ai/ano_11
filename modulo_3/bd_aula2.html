@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aula 2 - Bases de Dados | Tour Radical</title>
+<style>
+  :root{--bg:#fafaf8;--card:#fff;--border:#e8e6e1;--text:#1a1a1a;--muted:#6b6b6b;--accent:#111;--accent2:#ff5a2e;--radius:16px}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui;background:var(--bg);color:var(--text);line-height:1.6}
+#progress{position:fixed;top:0;left:0;height:3px;background:var(--accent2);width:0;z-index:100}
+.topbar{position:sticky;top:0;z-index:10;background:rgba(250,250,248,.8);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;gap:16px;align-items:center;padding:12px 24px}
+.brand{font-family:Sora;font-weight:700;font-size:12px;letter-spacing:.08em;text-transform:uppercase;opacity:.6}
+.title{font-family:Sora;font-weight:600}
+.layout{display:flex;max-width:1280px;margin:0 auto}
+.sidebar{position:sticky;top:52px;align-self:flex-start;width:200px;padding:24px 16px;display:flex;flex-direction:column;gap:8px}
+.sidebar a{padding:8px 12px;border-radius:10px;text-decoration:none;color:var(--muted);font-size:14px;font-weight:500}
+.sidebar a.active,.sidebar a:hover{background:var(--card);color:var(--text);border:1px solid var(--border)}
+main{flex:1;padding:24px;max-width:900px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px;margin-bottom:20px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.badge{display:inline-block;background:#111;color:#fff;border-radius:20px;padding:4px 12px;font-size:11px;letter-spacing:.05em;margin-bottom:12px}
+.hero h1{font-family:Sora;font-size:28px;line-height:1.25;margin:8px 0}
+.hero em{font-style:normal;background:linear-gradient(90deg,#ff5a2e,#ff8a2e);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.callout{background:#fff7ed;border:1px solid #ffedd5;border-radius:12px;padding:12px 16px;margin-top:16px;font-weight:500}
+.muted{color:var(--muted)}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px}
+.person{border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center;cursor:pointer;transition:.2s}
+.person:hover{transform:translateY(-2px);border-color:var(--text)}
+.avatar{font-size:32px;margin-bottom:8px}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0;align-items:center}
+.toolbar input{padding:8px 12px;border:1px solid var(--border);border-radius:10px;min-width:220px}
+button{padding:8px 14px;border-radius:10px;border:1px solid var(--border);background:var(--card);cursor:pointer;font-weight:600}
+button.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.table-wrap{overflow:auto;border:1px solid var(--border);border-radius:12px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;padding:10px 12px;background:#fcfbf9;border-bottom:1px solid var(--border);font-size:12px;text-transform:uppercase;letter-spacing:.05em}
+td{padding:8px 12px;border-bottom:1px solid #f2f0eb}
+td input{width:100%;border:none;background:transparent;padding:4px}
+td input:focus{outline:1px solid var(--accent2);border-radius:6px;background:#fff}
+.legend{margin-top:8px;font-size:12px;color:var(--muted)}
+.dot{width:10px;height:10px;border-radius:50%;display:inline-block;margin-right:4px}
+.dot.campo{background:var(--accent2)} .dot.registo{background:#111}
+.checklist{list-style:none;padding:0;margin:0}
+.checklist li{padding:12px 0;border-bottom:1px solid #f2f0eb}
+.checklist .tip{font-size:12px;color:var(--muted);margin-left:28px;margin-top:4px;display:none}
+.checklist li.open .tip{display:block}
+code{background:#f5f4f1;padding:2px 6px;border-radius:6px;font-size:12px}
+.progress-inline{margin-top:12px;font-weight:600;font-size:13px}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.ia-box{border:1px dashed var(--border);border-radius:12px;padding:16px}
+.ia-box textarea,.ia-box input{width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:8px;margin:6px 0 10px}
+.ia-box textarea{height:110px;resize:vertical}
+.resultado{margin-top:12px;display:flex;flex-direction:column;gap:8px}
+.resultado .page{border:1px solid var(--border);border-radius:10px;padding:12px;background:#fcfbf9}
+.resultado .page b{display:block;font-size:11px;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.cartaz-preview{margin-top:12px;background:linear-gradient(135deg,#111 0%,#333 100%);color:#fff;border-radius:12px;padding:24px;text-align:center;min-height:160px;display:flex;align-items:center;justify-content:center}
+.cartaz-inner h1{margin:0;font-family:Sora;font-size:22px}
+.cartaz-inner p{opacity:.8;margin:4px 0 12px}
+.flags{font-size:18px;letter-spacing:4px}
+.doc-structure{margin-top:20px}
+.pages{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.pages span{border:1px solid var(--border);padding:6px 10px;border-radius:20px;font-size:12px;background:#fcfbf9}
+#quiz .q{margin-bottom:16px}
+#quiz .q p{font-weight:600}
+#quiz button{display:block;width:100%;text-align:left;margin:6px 0;padding:10px 12px}
+#quiz button.correct{background:#dcfce7;border-color:#86efac}
+#quiz button.wrong{background:#fee2e2;border-color:#fca5a5}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;z-index:50}
+.modal.hidden{display:none}
+.modal-content{background:var(--card);border-radius:16px;padding:24px;max-width:420px;width:90%;position:relative}
+#closeModal{position:absolute;top:8px;right:8px}
+@media(max-width:900px){.layout{flex-direction:column}.sidebar{position:static;width:auto;flex-direction:row;overflow:auto}.two-col{grid-template-columns:1fr}.grid3{grid-template-columns:1fr}}
+.ima{width:100%;box-shadow: 5px 5px 20px 5px #000;}
+.ima1{width:40%;box-shadow: 5px 5px 20px 5px #000;}
+.historia{font-size: .9em;box-shadow: 5px 5px 20px 5px #000;border-radius: 1%;padding:30px;}
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+<div id="progress"></div>
+<header class="topbar">
+  <div class="brand">Módulo 3 • Aula 2</div>
+  <div class="title">Bases de Dados – Tour Radical</div>
+</header>
+<div class="layout">
+  <nav class="sidebar">
+    <a href="#intro" class="active">Introdução</a>
+    <a href="#videos">Participantes</a>
+    <a href="#basedados">Criar a BD</a>
+    <a href="#atividade">Atividade Excel</a>
+    <a href="#trabalho">Trabalho com IA</a>
+    <a href="#resumo">Resumo & Quiz</a>
+  </nav>
+  <main>
+    <!-- INTRO -->
+    <section id="intro" class="card hero">
+      <span class="badge">Aventura Imaginária</span>
+      <h2>Para aprendermos a trabalhar com Bases de Dados, vamos organizar dados a partir de uma aventura sobre <em>Desportos Radicais</em>.</h2>
+      <p class="historia">Dez amigos milionários, cada um de um país diferente, reuniram-se em Portugal para uma aventura única: aprender Excel enquanto praticam desportos radicais ao redor do mundo. Cada um deles é especialista em um desporto radical diferente e irá apresentar a sua emocionante atividade ao grupo.</p>
+      <p>Vamos começar por analisar e organizar os amigos. Cada amigo é um <strong>registo</strong>, cada caraterística é um <strong>campo</strong>.</p>
+      <div class="callout">💡 Esta é a base de tudo! Sem dados bem organizados, não há análise.</div>
+    </section>
+
+    <!-- VIDEOS -->
+    <section id="videos" class="card">
+      <h2>Vídeos de Apresentação</h2>
+      <p class="muted">Clique para conhecer cada um dos amigos e criar a Base de Dados.</p>
+  
+      <div class="grid3">
+        <div class="person" data-name="Chloé"> <img class="ima" src="assets/fotos/Chloe.png"><h3>Chloé</h3></div>
+        <div class="person" data-name="Tane"> <img class="ima" src="assets/fotos/Tane.png"><h3>Tane</h3></div>
+        <div class="person" data-name="Jacques"> <img class="ima" src="assets/fotos/Jacques.png"><h3>Jacques</h3></div>
+        <div class="person" data-name="Ana"> <img class="ima" src="assets/fotos/Ana.png"><h3>Ana</h3></div>
+        <div class="person" data-name="Khalid"> <img class="ima" src="assets/fotos/Khalid.png"><h3>Khalid</h3></div>
+        <div class="person" data-name="Yuki"> <img class="ima" src="assets/fotos/Yuki.png"><h3>Yuki</h3></div>
+        <div class="person" data-name="Amir"> <img class="ima" src="assets/fotos/Amir.png"><h3>Amir</h3></div>
+        <div class="person" data-name="Naledi"> <img class="ima" src="assets/fotos/Naledi.png"><h3>Naledi</h3></div>
+        <div class="person" data-name="Klaus"> <img class="ima" src="assets/fotos/Klaus.png"><h3>Klaus</h3></div>
+        <div class="person" data-name="Joao"> <img class="ima" src="assets/fotos/Joao.png"><h3>João</h3></div>
+      </div>
+    </section>
+
+    <!-- BD -->
+    <section id="basedados" class="card">
+      <h2>Criar a Base de Dados no Excel</h2>
+      <p>No Excel vamos criar uma lista com os <strong>10 amigos milionários</strong>. Cada linha será o registo de um amigo, e cada coluna identifica o tipo de dado.</p>
+      
+      <div class="toolbar">
+        <input id="filter" placeholder="Filtrar por continente ou país...">
+        <button id="addRow">+ Adicionar amigo</button>
+        <button id="validate" class="primary">Validar BD</button>
+        <span id="count"></span>
+      </div>
+
+      <div class="table-wrap">
+        <table id="bdTable">
+          <thead><tr><th>Nome</th><th>Características</th><th>Foto</th><th>País</th><th>Cidade</th><th>Fortuna</th><th>Proveniência</th><th></th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <div class="legend"><span class="dot campo"></span> Campo = coluna (tipo de dado) • <span class="dot registo"></span> Registo = linha (um amigo)</div>
+    </section>
+
+    <!-- ATIVIDADE -->
+    <section id="atividade" class="card">
+      <h2>Atividade Prática</h2>
+      <ol class="checklist" id="checklist">
+        <li><label><input type="checkbox"> Crie um livro novo no <strong>Excel Online</strong></label><div class="tip">Vai a office.com > Excel > Livro em branco</div></li>
+        <li><label><input type="checkbox"> Renomeie a Folha1 para <code>Amigos</code></label><div class="tip">Duplo clique no nome da folha em baixo</div></li>
+        <li><label><input type="checkbox"> Crie a tabela (Nome na célula A1) e preencha com os 10 amigos</label><div class="tip">Colunas: Nome, Características, Fotografia, Continente, País, Fortuna, Proveniência</div></li>
+        <li><label><input type="checkbox"> Insira a fotografia e redimensione-a</label><div class="tip">Inserir > Imagens > Dentro da célula para ficar organizada</div></li>
+        <li><label><input type="checkbox"> Guarde no OneDrive como <code>Tour_Radical</code></label><div class="tip">Ficheiro > Guardar Como > OneDrive</div></li>
+        <li><label><input type="checkbox"> Formate como tabela</label><div class="tip">Formatar como Tabela, filtros, larguras ajustadas</div></li>
+      </ol>
+      <div id="progressAtv" class="progress-inline">0/6 concluídos</div>
+    </section>
+
+    <!-- TRABALHO -->
+    <section id="trabalho" class="card">
+      <h3>Trabalho – Criar um documento Word com informações sobre os países com IA</h3>
+      <div class="two-col">
+        <div class="ia-box">
+          <h3>1. LMArena.ai</h3>
+          <label>Prompt modelo (pode copiar):</label>
+          <textarea id="promptIA">Assuma o papel de um aluno do 11º ano e desenvolva um documento em word que apresente os seguintes países: Portugal e Brasil. O documento deve ter duas páginas para cada país, na primeira página apresenta o país e na segunda apresenta a principal atração turística do país.</textarea>
+          <div class="row"><input id="paisesInput" value="Portugal, Brasil, Japão, África do Sul"></div>
+          <div id="resultadoIA" class="resultado"></div>
+          <small class="muted">Link: https://arena.ai</small>
+          <p class="historia">Obs: O documento final deve ter uma imagem do mapa de cada país e uma imagem da sua atração turística. E deve ter os quatro países indicados acima.</p>
+        </div>
+        <div class="ia-box">
+          <h3>2. Microsoft Designer – Capa</h3>
+          <label>Título</label><input id="cartazTitulo" value="Os 10 Amigos">
+          <label>Subtítulo</label><input id="cartazSub" value="Países de Origem">
+          <img class="ima1" src="assets/img/capa.jpg"/>
+          <div id="resultadoIA" class="resultado"></div>
+          <small class="muted">Link: https://designer.microsoft.com</small>
+        </div>
+      </div>
+      <div class="doc-structure">
+        <h4>Estrutura final esperada do Word:</h4>
+        <div class="pages"><span>Capa (Cartaz)</span><span>Portugal – País</span><span>Portugal – Atração</span><span>Brasil – País</span><span>Brasil – Atração</span><span>... restantes países</span></div>
+        <p></p><img class="ima" src="assets/img/doc_paises.jpg"/>
+      </div>
+    </section>
+
+    <!-- RESUMO -->
+    <section id="resumo" class="card">
+      <h2>Resumo da Aula</h2>
+      <ul class="checklist" id="resumoCheck">
+        <li><label><input type="checkbox"> Criar uma lista no Excel para servir como Base de Dados</label></li>
+        <li><label><input type="checkbox"> Utilizar o LMArena.ai para obter informação com IA</label></li>
+        <li><label><input type="checkbox"> Relembrar como criar documento em Word</label></li>
+        <li><label><input type="checkbox"> Criar imagens com IA no Microsoft Designer</label></li>
+      </ul>
+      <div id="confetti"></div>
+      <h3 style="margin-top:32px">Mini Quiz</h3>
+      <div id="quiz"></div>
+    </section>
+  </main>
+</div>
+
+<div id="modal" class="modal hidden"><div class="modal-content"><button id="closeModal">✕</button><div id="modalBody"></div></div></div>
+
+<script>
+  const initialData = [
+{nome:"Chloé Sterling",foto:"assets/fotos/chloe.png",carac:"Cabelo platinado curto",pais:"Austrália",cidade:"A",fortuna:"900",prov:"Minas de Opala"},
+/*{foto:"🧗‍♀️",nome:"Naledi Okoro",carac:"Determinada, forte",cont:"África",pais:"África do Sul",fortuna:"850",prov:"Mineração"},
+{foto:"🏄‍♂️",nome:"Tane Williams",carac:"Aventureiro, calmo",cont:"Oceania",pais:"Nova Zelândia",fortuna:"430",prov:"Surf wear"},
+{foto:"🚴",nome:"Sofia Rossi",carac:"Resistente, criativa",cont:"Europa",pais:"Itália",fortuna:"670",prov:"Moda"},
+{foto:"🪂",nome:"Liam O'Connor",carac:"Ousado, líder",cont:"Europa",pais:"Irlanda",fortuna:"2100",prov:"Aviação"},
+{foto:"🏜️",nome:"Amara Silva",carac:"Exploradora",cont:"América do Sul",pais:"Brasil",fortuna:"950",prov:"Ecoturismo"},
+{foto:"⛷️",nome:"Erik Larsen",carac:"Preciso, frio",cont:"Europa",pais:"Noruega",fortuna:"3100",prov:"Energia"},
+{foto:"🤿",nome:"Maya Patel",carac:"Curiosa, técnica",cont:"Ásia",pais:"Índia",fortuna:"560",prov:"Biologia marinha"},
+{foto:"🏔️",nome:"João Mendes",carac:"Persistente",cont:"Europa",pais:"Portugal",fortuna:"720",prov:"Vinhos"},
+{foto:"🏎️",nome:"Carlos Rivera",carac:"Veloz, competitivo",cont:"América do Norte",pais:"México",fortuna:"1800",prov:"Automóvel"},*/
+];
+
+let data = JSON.parse(JSON.stringify(initialData));
+const tbody = document.querySelector("#bdTable tbody");
+const filterInput = document.getElementById("filter");
+const countEl = document.getElementById("count");
+
+function getFotoHTML(foto){
+  if(foto.includes("/") || foto.includes(".png")){
+    return `<img src="${foto}" style="width:48px;height:48px;object-fit:cover;border-radius:10px;">`;
+  }
+  return `<span style="font-size:24px">${foto}</span>`; // emoji
+}
+
+function render(){
+  tbody.innerHTML="";
+  const f = filterInput.value.toLowerCase();
+  let visible = data.filter(d=> (d.cont+" "+d.pais+" "+d.nome).toLowerCase().includes(f));
+  visible.forEach((row,i)=>{
+    const tr=document.createElement("tr");
+    tr.innerHTML=`
+      <td><input value="${row.nome}"></td>
+      <td><input value="${row.carac}"></td>
+      <td>
+      ${getFotoHTML(row.foto)}
+  <input type="hidden" value="${row.foto}">  
+      </td>
+      <td><input value="${row.pais}"></td>
+      <td><input value="${row.cidade}"></td>
+      <td><input value="${row.fortuna}"></td>
+      <td><input value="${row.prov}"></td>
+      <td><button onclick="removeRow(${data.indexOf(row)})">✕</button></td>`;
+    // bind edits
+    [...tr.querySelectorAll("input")].forEach((inp,idx)=>{
+      inp.addEventListener("change",()=>{
+        const keys=["foto","nome","carac","cont","pais","fortuna","prov"];
+        row[keys[idx]]=inp.value;
+      })
+    })
+    tbody.appendChild(tr);
+  });
+  countEl.textContent = `${visible.length}/${data.length} registos`;
+  document.getElementById("progressAtv").textContent; // keep
+}
+window.removeRow = (idx)=>{data.splice(idx,1);render()};
+
+document.getElementById("addRow").onclick=()=>{data.push({foto:"😀",nome:"",carac:"",pais:"",cidade:"",fortuna:"",prov:""});render()};
+filterInput.oninput=render;
+document.getElementById("validate").onclick=()=>{
+  if(data.length===10) alert("✅ Base de Dados válida! 10 registos encontrados. Excelente!");
+  else alert(`⚠️ Tens ${data.length} registos. A atividade pede 10.`);
+};
+render();
+
+// Progress bar
+window.addEventListener("scroll",()=>{
+  const scrolled = window.scrollY / (document.body.scrollHeight - window.innerHeight) *100;
+  document.getElementById("progress").style.width=scrolled+"%";
+  document.querySelectorAll("section").forEach(s=>{
+    const rect=s.getBoundingClientRect();
+    if(rect.top<120 && rect.bottom>120){
+      document.querySelectorAll(".sidebar a").forEach(a=>a.classList.remove("active"));
+      const a=document.querySelector(`.sidebar a[href="#${s.id}"]`);
+      if(a) a.classList.add("active");
+    }
+  })
+});
+
+// Checklist atividade
+document.querySelectorAll("#checklist li").forEach(li=>{
+  li.addEventListener("click",(e)=>{
+    if(e.target.tagName!=="INPUT") li.classList.toggle("open");
+  })
+});
+document.querySelectorAll("#checklist input").forEach(inp=>{
+  inp.addEventListener("change",updateAtv);
+});
+function updateAtv(){
+  const total=document.querySelectorAll("#checklist input").length;
+  const done=document.querySelectorAll("#checklist input:checked").length;
+  document.getElementById("progressAtv").textContent=`${done}/${total} concluídos`;
+  if(done===total) document.getElementById("progressAtv").textContent+=" 🎉";
+}
+
+// IA simulador
+/*document.getElementById("gerarIA").onclick=()=>{
+  const paises = document.getElementById("paisesInput").value.split(",").map(s=>s.trim()).filter(Boolean);
+  const out = document.getElementById("resultadoIA");
+  out.innerHTML="";
+  paises.forEach(p=>{
+    out.innerHTML+=`<div class="page"><b>${p} – Página 1: O País</b> ${p} é um país com cultura rica, localizado... (texto gerado por IA com dados gerais, história e geografia).</div><div class="page"><b>${p} – Página 2: Atração Turística</b> Principal atração de ${p}: ponto turístico icónico com história e curiosidades...</div>`;
+  });
+};
+
+// Cartaz
+document.getElementById("gerarCartaz").onclick=()=>{
+  const t=document.getElementById("cartazTitulo").value;
+  const s=document.getElementById("cartazSub").value;
+  document.querySelector(".cartaz-inner h1").textContent=t;
+  document.querySelector(".cartaz-inner p").textContent=s;
+};*/
+
+// Modal participantes
+const modal=document.getElementById("modal");
+const modalBody=document.getElementById("modalBody");
+document.querySelectorAll(".person").forEach(card=>{
+  card.onclick=()=>{
+    const name=card.dataset.name;
+    const info={
+      Chloé:"Nome: Chloe Sterling<br>Caraterísticas: Cabelo platinado curto, olhos azuis claros, corpo atlético de ginasta, pulseira de opala<br>País: Austrália<br>Cidade: Sidney<br>Fortuna: €900 milhões<br>Proveniência: Minas de Opala",
+      Tane:"Nome: Tane Waititi<br>Caraterísticas: Maori com tatuagem facial tradicional, físico imponente, sorriso fácil<br>País: Nova Zelândia<br>Cidade: Auckland<br>Fortuna: €1,2 mil milhões<br>Proveniência: Criptomoedas",
+      Jacques:"Nome: Jacques LaRue<br>Caraterísticas: Alto, barba ruiva bem aparada, usa colar de prata com pinheiro<br>País: Canadá<br>Cidade: Toronto<br>Fortuna: €850 milhões<br>Proveniência: Indústria de Madeiras",
+      Ana:"Nome: Ana Silva<br>Caraterísticas: Cabelos negros longos, olhos castanhos intensos, energia contagiante<br>País: Brasil<br>Cidade: São Paulo<br>Fortuna: €1,5 mil milhões<br>Proveniência: Jazidas de Nióbio",
+      Khalid:"Nome: Khalid Al-Fayed<br>Caraterísticas: Veste thobe branco, óculos de sol de ouro, calmo e metódico<br>País: Emirados àrabes Unidos<br>Cidade: Dubai<br>Fortuna: €3,2 mil milhões<br>Proveniência: Poços de Petróleo",
+      Yuki:"Nome: Yuki Tanaka<br>Caraterísticas: Estilo harajuku misturado com roupa técnica, cabelo roxo, sorriso tímido mas determinado<br>País: Japão<br>Cidade: Tóquio<br>Fortuna: €3,2 mil milhões<br>Proveniência: Poços de Petróleo",
+      Amir:"Nome: Amir Hassan<br>Caraterísticas: Bronzeado perfeito, usa kufiyyah (lenço árabe) estilizado, olhar misterioso<br>País: Egito<br>Cidade: Cairo<br>Fortuna: €1,1 mil milhões<br>Proveniência: Turismo de Luxo",
+      Naledi:"Nome: Naledi Bhengu<br>Caraterísticas: Altiva, usa cores vibrantes, cabelo com rastas<br>País: África do Sul<br>Cidade: Joanesburgo<br>Fortuna: €950 milhões<br>Proveniência: Minas de Diamantes",
+      Klaus:"Nome: Klaus Richter<br>Caraterísticas: Cabelo grisalho, físico esguio mas forte, veste-se com casacos de alta qualidade<br>País: Suíça<br>Cidade: Zurique<br>Fortuna: €2 mil milhões<br>Proveniência: Relógios de Luxo",
+      Joao:"Nome: João Monteiro<br>Caraterísticas: Bronzeado, olhos verdes, ar descontraído<br>País: Portugal<br>Cidade: Lisboa<br>Fortuna: €800 milhões<br>Proveniência: Fábricas de Cortiça"
+
+    };
+    const videos={
+      Chloé:"assets/videos/Chloe.mp4",
+      Tane:"assets/videos/Tane.mp4",
+      Jacques:"assets/videos/ja.mp4",
+      Ana:"assets/videos/Ana.mp4",
+      Khalid:"assets/videos/Khalid.mp4",
+      Yuki:"assets/videos/Yuki.mp4",
+      Amir:"assets/videos/Amir.mp4",
+      Naledi:"assets/videos/Naledi.mp4",
+      Klaus:"assets/videos/Klaus.mp4",
+      Joao:"assets/videos/Joao.mp4",
+     
+    };
+     modalBody.innerHTML=`
+      <h2>${name}</h2>
+      <p>${info[name] || "Aventureiro radical."}</p>
+
+      ${videos[name]? `
+        <video controls style="width:100%; border-radius:12px; margin-top:12px; display:block;">
+          <source src="${videos[name]}" type="video/mp4">
+          O teu browser não suporta vídeo.
+        </video>
+      ` : ""}
+
+      <p class="muted" style="margin-top:12px;">Este registo faz parte da Base de Dados Tour_Radical.</p>
+    `;
+    modal.classList.remove("hidden");
+  };
+});
+document.getElementById("closeModal").onclick=()=>modal.classList.add("hidden");
+modal.onclick=(e)=>{if(e.target===modal) modal.classList.add("hidden")};
+
+// Resumo confetti simple
+document.querySelectorAll("#resumoCheck input").forEach(i=>{
+  i.addEventListener("change",()=>{
+    const all=document.querySelectorAll("#resumoCheck input");
+    if([...all].every(x=>x.checked)){
+      document.getElementById("confetti").innerHTML="🎉🎉🎉 Parabéns! Esta completa a Aula 2! 🎉🎉🎉";
+    }
+  })
+});
+
+// Quiz
+const quizData=[
+{q:"O que é um REGISTO numa BD?",opts:["Uma coluna","Uma linha com dados de um amigo","Uma fotografia"],a:1},
+{q:"Onde devemos guardar o ficheiro Tour_Radical?",opts:["No ambiente de trabalho","No OneDrive","No WhatsApp"],a:1},
+{q:"Para que serve o LMArena.ai nesta aula?",opts:["Para jogar","Para obter texto sobre países com IA","Para editar fotos"],a:1},
+{q:"O campo Nome deve estar em que célula?",opts:["A1","B2","Z10"],a:0},
+];
+const quizEl=document.getElementById("quiz");
+quizData.forEach((item,idx)=>{
+  const div=document.createElement("div"); div.className="q";
+  div.innerHTML=`<p>${idx+1}. ${item.q}</p>`;
+  item.opts.forEach((opt,i)=>{
+    const b=document.createElement("button"); b.textContent=opt;
+    b.onclick=()=>{
+      [...div.querySelectorAll("button")].forEach(x=>x.disabled=true);
+      if(i===item.a){b.classList.add("correct")} else {b.classList.add("wrong"); div.querySelectorAll("button")[item.a].classList.add("correct");}
+    };
+    div.appendChild(b);
+  });
+  quizEl.appendChild(div);
+});
+</script>
+</html>
