@@ -70,8 +70,9 @@ code{background:#f5f4f1;padding:2px 6px;border-radius:6px;font-size:12px}
 #closeModal{position:absolute;top:8px;right:8px}
 @media(max-width:900px){.layout{flex-direction:column}.sidebar{position:static;width:auto;flex-direction:row;overflow:auto}.two-col{grid-template-columns:1fr}.grid3{grid-template-columns:1fr}}
 .ima{width:100%;box-shadow: 5px 5px 20px 5px #000;}
-.ima1{width:40%;box-shadow: 5px 5px 20px 5px #000;}
+.ima1{width:70%;box-shadow: 5px 5px 20px 5px #000;}
 .historia{font-size: .9em;box-shadow: 5px 5px 20px 5px #000;border-radius: 1%;padding:30px;}
+#manual{box-shadow: 5px 5px 20px 5px #000;text-align: center;color:red}
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
@@ -79,25 +80,46 @@ code{background:#f5f4f1;padding:2px 6px;border-radius:6px;font-size:12px}
 <div id="progress"></div>
 <header class="topbar">
   <div class="brand">Módulo 3 • Aula 2</div>
-  <div class="title">Bases de Dados – Tour Radical</div>
+  <div class="title">Bases de Dados | Tour Radical</div>
 </header>
 <div class="layout">
   <nav class="sidebar">
     <a href="#intro" class="active">Introdução</a>
-    <a href="#videos">Participantes</a>
     <a href="#basedados">Criar a BD</a>
+    <a href="#videos">Participantes</a>
     <a href="#atividade">Atividade Excel</a>
-    <a href="#trabalho">Trabalho com IA</a>
     <a href="#resumo">Resumo & Quiz</a>
+    <a href="#trabalho">Trabalho</a>
   </nav>
   <main>
     <!-- INTRO -->
     <section id="intro" class="card hero">
-      <span class="badge">Aventura Imaginária</span>
-      <h2>Para aprendermos a trabalhar com Bases de Dados, vamos organizar dados a partir de uma aventura sobre <em>Desportos Radicais</em>.</h2>
+      <h2>Introdução</h2>
+      <p>Para aprender a trabalhar com Bases de Dados, vai organizar os dados a partir de uma aventura sobre <em>Desportos Radicais</em>.</p>
       <p class="historia">Dez amigos milionários, cada um de um país diferente, reuniram-se em Portugal para uma aventura única: aprender Excel enquanto praticam desportos radicais ao redor do mundo. Cada um deles é especialista em um desporto radical diferente e irá apresentar a sua emocionante atividade ao grupo.</p>
-      <p>Vamos começar por analisar e organizar os amigos. Cada amigo é um <strong>registo</strong>, cada caraterística é um <strong>campo</strong>.</p>
+      <p>Vai começar por analisar e organizar os amigos. Cada amigo é um <strong>registo</strong>, cada caraterística é um <strong>campo</strong>.</p>
       <div class="callout">💡 Esta é a base de tudo! Sem dados bem organizados, não há análise.</div>
+    </section>
+
+    <!-- BD -->
+    <section id="basedados" class="card">
+      <h2>Criar a Base de Dados no Excel</h2>
+      <p>No Excel crie uma lista com os <strong>10 amigos milionários</strong>. Cada linha será o registo de um amigo, e cada coluna identifica o tipo de dado.</p>
+      
+      <div class="toolbar">
+        <input id="filter" placeholder="Filtrar por continente ou país...">
+        <button id="addRow">+ Adicionar amigo</button>
+        <button id="validate" class="primary">Validar BD</button>
+        <span id="count"></span>
+      </div>
+
+      <div class="table-wrap">
+        <table id="bdTable">
+          <thead><tr><th>Nome</th><th>Características</th><th>Foto</th><th>País</th><th>Cidade</th><th>Fortuna</th><th>Proveniência</th><th></th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <div class="legend"><span class="dot campo"></span> Campo = coluna (tipo de dado) • <span class="dot registo"></span> Registo = linha (um amigo)</div>
     </section>
 
     <!-- VIDEOS -->
@@ -119,68 +141,19 @@ code{background:#f5f4f1;padding:2px 6px;border-radius:6px;font-size:12px}
       </div>
     </section>
 
-    <!-- BD -->
-    <section id="basedados" class="card">
-      <h2>Criar a Base de Dados no Excel</h2>
-      <p>No Excel vamos criar uma lista com os <strong>10 amigos milionários</strong>. Cada linha será o registo de um amigo, e cada coluna identifica o tipo de dado.</p>
-      
-      <div class="toolbar">
-        <input id="filter" placeholder="Filtrar por continente ou país...">
-        <button id="addRow">+ Adicionar amigo</button>
-        <button id="validate" class="primary">Validar BD</button>
-        <span id="count"></span>
-      </div>
-
-      <div class="table-wrap">
-        <table id="bdTable">
-          <thead><tr><th>Nome</th><th>Características</th><th>Foto</th><th>País</th><th>Cidade</th><th>Fortuna</th><th>Proveniência</th><th></th></tr></thead>
-          <tbody></tbody>
-        </table>
-      </div>
-      <div class="legend"><span class="dot campo"></span> Campo = coluna (tipo de dado) • <span class="dot registo"></span> Registo = linha (um amigo)</div>
-    </section>
 
     <!-- ATIVIDADE -->
     <section id="atividade" class="card">
       <h2>Atividade Prática</h2>
       <ol class="checklist" id="checklist">
-        <li><label><input type="checkbox"> Crie um livro novo no <strong>Excel Online</strong></label><div class="tip">Vai a office.com > Excel > Livro em branco</div></li>
-        <li><label><input type="checkbox"> Renomeie a Folha1 para <code>Amigos</code></label><div class="tip">Duplo clique no nome da folha em baixo</div></li>
-        <li><label><input type="checkbox"> Crie a tabela (Nome na célula A1) e preencha com os 10 amigos</label><div class="tip">Colunas: Nome, Características, Fotografia, Continente, País, Fortuna, Proveniência</div></li>
-        <li><label><input type="checkbox"> Insira a fotografia e redimensione-a</label><div class="tip">Inserir > Imagens > Dentro da célula para ficar organizada</div></li>
-        <li><label><input type="checkbox"> Guarde no OneDrive como <code>Tour_Radical</code></label><div class="tip">Ficheiro > Guardar Como > OneDrive</div></li>
-        <li><label><input type="checkbox"> Formate como tabela</label><div class="tip">Formatar como Tabela, filtros, larguras ajustadas</div></li>
+        <li><label><input type="checkbox"> Crie um livro novo no <strong>Excel Online</strong></label></li>
+        <li><label><input type="checkbox"> Renomeie a Folha1 para <code>Amigos</code></label></li>
+        <li><label><input type="checkbox"> Crie a tabela (NOME na célula A1, CARACTERÍSTICAS na célula B1, ...) e preencha com os 10 amigos</label></li>
+        <li><label><input type="checkbox"> Insira a fotografia</label></li>
+        <li><label><input type="checkbox"> Guarde no OneDrive como <code>Tour_Radical</code></label></li>
+        
       </ol>
-      <div id="progressAtv" class="progress-inline">0/6 concluídos</div>
-    </section>
-
-    <!-- TRABALHO -->
-    <section id="trabalho" class="card">
-      <h3>Trabalho – Criar um documento Word com informações sobre os países com IA</h3>
-      <div class="two-col">
-        <div class="ia-box">
-          <h3>1. LMArena.ai</h3>
-          <label>Prompt modelo (pode copiar):</label>
-          <textarea id="promptIA">Assuma o papel de um aluno do 11º ano e desenvolva um documento em word que apresente os seguintes países: Portugal e Brasil. O documento deve ter duas páginas para cada país, na primeira página apresenta o país e na segunda apresenta a principal atração turística do país.</textarea>
-          <div class="row"><input id="paisesInput" value="Portugal, Brasil, Japão, África do Sul"></div>
-          <div id="resultadoIA" class="resultado"></div>
-          <small class="muted">Link: https://arena.ai</small>
-          <p class="historia">Obs: O documento final deve ter uma imagem do mapa de cada país e uma imagem da sua atração turística. E deve ter os quatro países indicados acima.</p>
-        </div>
-        <div class="ia-box">
-          <h3>2. Microsoft Designer – Capa</h3>
-          <label>Título</label><input id="cartazTitulo" value="Os 10 Amigos">
-          <label>Subtítulo</label><input id="cartazSub" value="Países de Origem">
-          <img class="ima1" src="assets/img/capa.jpg"/>
-          <div id="resultadoIA" class="resultado"></div>
-          <small class="muted">Link: https://designer.microsoft.com</small>
-        </div>
-      </div>
-      <div class="doc-structure">
-        <h4>Estrutura final esperada do Word:</h4>
-        <div class="pages"><span>Capa (Cartaz)</span><span>Portugal – País</span><span>Portugal – Atração</span><span>Brasil – País</span><span>Brasil – Atração</span><span>... restantes países</span></div>
-        <p></p><img class="ima" src="assets/img/doc_paises.jpg"/>
-      </div>
+      <div id="progressAtv" class="progress-inline">5 passos</div>
     </section>
 
     <!-- RESUMO -->
@@ -196,14 +169,51 @@ code{background:#f5f4f1;padding:2px 6px;border-radius:6px;font-size:12px}
       <h3 style="margin-top:32px">Mini Quiz</h3>
       <div id="quiz"></div>
     </section>
+
+    <!-- TRABALHO -->
+    <section id="trabalho" class="card">
+      <h3>Trabalho – Criar um documento Word com ajuda da IA</h3>
+      <p>Crie um documento Word com informações sobre os países dos Amigos João e Ana.</p>
+      <div class="two-col">
+        <div class="ia-box">
+          <h3>1. LMArena.ai</h3>
+          <label>Prompt modelo (pode copiar):</label>
+          <textarea id="promptIA">Indique-me 3 tópicos de pesquisa sobre [PAÍS], para que eu possa elaborar um documento que faça a apresentação desse país para um turista.</textarea>
+          <div id="resultadoIA" class="resultado"></div>
+          <small class="muted">Link: https://arena.ai</small>
+          <p class="historia">Obs: O documento final deve ter os dois países indicados e deve ter 2 páginas para cada país: A primeira apresenta o país com a imagem do seu mapa a segunda uma atração turística do país e uma imagem dessa atração turística.</p>
+        </div>
+        <div class="ia-box">
+          <h3>2. Microsoft Designer – Capa</h3>
+          <label>Título</label><input id="cartazTitulo" value="Tour Radical">
+          <label>Subtítulo</label><input id="cartazSub" value="Os 10 Amigos">
+          <img class="ima1" src="assets/img/capa_tour_radical.png"/>
+          <div id="resultadoIA" class="resultado"></div>
+          <small class="muted">Link: https://designer.microsoft.com</small>
+        </div>
+      </div>
+      <div class="doc-structure">
+        <h4>Estrutura final esperada do Word:</h4>
+        <div class="pages"><span>Capa</span><span>Portugal – País</span><span>Portugal – Atração</span><span>Brasil – País</span><span>Brasil – Atração</span></div>
+        <p></p><img class="ima" src="assets/img/doc_paises.jpg"/>
+        <p id="manual">Guarde esse documento com o nome "Tour_Radical".</p>
+      </div>
+      <div class="callout">
+      <p>Crie uma apresentação em PowerPoint com o resumo dos pontos que desenvolveu nesta aula.</p>
+      <p id="manual">Um aluno será sorteado na próxima aula para apresentar o seu trabalho à turma.</p>
+      </div>
+    </section>
+
   </main>
 </div>
+
+
 
 <div id="modal" class="modal hidden"><div class="modal-content"><button id="closeModal">✕</button><div id="modalBody"></div></div></div>
 
 <script>
   const initialData = [
-{nome:"Chloé Sterling",foto:"assets/fotos/chloe.png",carac:"Cabelo platinado curto",pais:"Austrália",cidade:"A",fortuna:"900",prov:"Minas de Opala"},
+{nome:"Chloé Sterling",foto:"assets/fotos/chloe.png",carac:"Cabelo platinado curto",pais:"Austrália",cidade:"Sidney",fortuna:"900",prov:"Minas de Opala"},
 /*{foto:"🧗‍♀️",nome:"Naledi Okoro",carac:"Determinada, forte",cont:"África",pais:"África do Sul",fortuna:"850",prov:"Mineração"},
 {foto:"🏄‍♂️",nome:"Tane Williams",carac:"Aventureiro, calmo",cont:"Oceania",pais:"Nova Zelândia",fortuna:"430",prov:"Surf wear"},
 {foto:"🚴",nome:"Sofia Rossi",carac:"Resistente, criativa",cont:"Europa",pais:"Itália",fortuna:"670",prov:"Moda"},
