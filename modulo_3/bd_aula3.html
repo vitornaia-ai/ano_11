@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aula 3 - Os 10 Amigos | Tour Radical</title>
+<style>
+  :root{--bg:#fafaf8;--card:#fff;--border:#e8e6e1;--text:#1a1a1a;--muted:#6b6b6b;--accent:#111;--accent2:#ff5a2e;--radius:16px}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui;background:var(--bg);color:var(--text);line-height:1.6}
+#progress{position:fixed;top:0;left:0;height:3px;background:var(--accent2);width:0;z-index:100}
+.topbar{position:sticky;top:0;z-index:10;background:rgba(250,250,248,.8);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;gap:16px;align-items:center;padding:12px 24px}
+.brand{font-family:Sora;font-weight:700;font-size:12px;letter-spacing:.08em;text-transform:uppercase;opacity:.6}
+.title{font-family:Sora;font-weight:600}
+.layout{display:flex;max-width:1280px;margin:0 auto}
+.sidebar{position:sticky;top:52px;align-self:flex-start;width:200px;padding:24px 16px;display:flex;flex-direction:column;gap:8px}
+.sidebar a{padding:8px 12px;border-radius:10px;text-decoration:none;color:var(--muted);font-size:14px;font-weight:500}
+.sidebar a.active,.sidebar a:hover{background:var(--card);color:var(--text);border:1px solid var(--border)}
+main{flex:1;padding:24px;max-width:900px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px;margin-bottom:20px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.badge{display:inline-block;background:#111;color:#fff;border-radius:20px;padding:4px 12px;font-size:11px;letter-spacing:.05em;margin-bottom:12px}
+.hero h1{font-family:Sora;font-size:28px;line-height:1.25;margin:8px 0}
+.hero em{font-style:normal;background:linear-gradient(90deg,#ff5a2e,#ff8a2e);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.callout{background:#fff7ed;border:1px solid #ffedd5;border-radius:12px;padding:12px 16px;margin-top:16px;font-weight:500}
+.muted{color:var(--muted)}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px}
+.person{border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center;cursor:pointer;transition:.2s}
+.person:hover{transform:translateY(-2px);border-color:var(--text)}
+.avatar{font-size:32px;margin-bottom:8px}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0;align-items:center}
+.toolbar input{padding:8px 12px;border:1px solid var(--border);border-radius:10px;min-width:220px}
+button{padding:8px 14px;border-radius:10px;border:1px solid var(--border);background:var(--card);cursor:pointer;font-weight:600}
+button.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.table-wrap{overflow:auto;border:1px solid var(--border);border-radius:12px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;padding:10px 12px;background:#fcfbf9;border-bottom:1px solid var(--border);font-size:12px;text-transform:uppercase;letter-spacing:.05em}
+td{padding:8px 12px;border-bottom:1px solid #f2f0eb}
+td input{width:100%;border:none;background:transparent;padding:4px}
+td input:focus{outline:1px solid var(--accent2);border-radius:6px;background:#fff}
+.legend{margin-top:8px;font-size:12px;color:var(--muted)}
+.dot{width:10px;height:10px;border-radius:50%;display:inline-block;margin-right:4px}
+.dot.campo{background:var(--accent2)} .dot.registo{background:#111}
+.checklist{list-style:none;padding:0;margin:0}
+.checklist li{padding:12px 0;border-bottom:1px solid #f2f0eb}
+.checklist .tip{font-size:12px;color:var(--muted);margin-left:28px;margin-top:4px;display:none}
+.checklist li.open .tip{display:block}
+code{background:#f5f4f1;padding:2px 6px;border-radius:6px;font-size:12px}
+.progress-inline{margin-top:12px;font-weight:600;font-size:13px}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.ia-box{border:1px dashed var(--border);border-radius:12px;padding:16px}
+.ia-box textarea,.ia-box input{width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:8px;margin:6px 0 10px}
+.ia-box textarea{height:110px;resize:vertical}
+.resultado{margin-top:12px;display:flex;flex-direction:column;gap:8px}
+.resultado .page{border:1px solid var(--border);border-radius:10px;padding:12px;background:#fcfbf9}
+.resultado .page b{display:block;font-size:11px;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.cartaz-preview{margin-top:12px;background:linear-gradient(135deg,#111 0%,#333 100%);color:#fff;border-radius:12px;padding:24px;text-align:center;min-height:160px;display:flex;align-items:center;justify-content:center}
+.cartaz-inner h1{margin:0;font-family:Sora;font-size:22px}
+.cartaz-inner p{opacity:.8;margin:4px 0 12px}
+.flags{font-size:18px;letter-spacing:4px}
+.doc-structure{margin-top:20px}
+.pages{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.pages span{border:1px solid var(--border);padding:6px 10px;border-radius:20px;font-size:12px;background:#fcfbf9}
+#quiz .q{margin-bottom:16px}
+#quiz .q p{font-weight:600}
+#quiz button{display:block;width:100%;text-align:left;margin:6px 0;padding:10px 12px}
+#quiz button.correct{background:#dcfce7;border-color:#86efac}
+#quiz button.wrong{background:#fee2e2;border-color:#fca5a5}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;z-index:50}
+.modal.hidden{display:none}
+.modal-content{background:var(--card);border-radius:16px;padding:24px;max-width:420px;width:90%;position:relative}
+#closeModal{position:absolute;top:8px;right:8px}
+@media(max-width:900px){.layout{flex-direction:column}.sidebar{position:static;width:auto;flex-direction:row;overflow:auto}.two-col{grid-template-columns:1fr}.grid3{grid-template-columns:1fr}}
+.ima{width:100%;box-shadow: 5px 5px 20px 5px #000;}
+.ima1{width:40%;box-shadow: 5px 5px 20px 5px #000;}
+.historia{font-size: .9em;box-shadow: 5px 5px 20px 5px #000;border-radius: 1%;padding:30px;}
+#manual{box-shadow: 5px 5px 20px 5px #000;text-align: center;color:red}
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+<div id="progress"></div>
+<header class="topbar">
+  <div class="brand">Módulo 3 • Aula 3</div>
+  <div class="title">Os 10 Amigos – Tour Radical</div>
+</header>
+<div class="layout">
+  <nav class="sidebar">
+    <a href="#intro" class="active">Introdução</a>
+    <a href="#atividade">Atividade Prática</a>
+    <a href="#resumo">Resumo</a>
+    <a href="#trabalho">Trabalho</a>
+  </nav>
+  <main>
+    <!-- INTRO -->
+    <section id="intro" class="card hero">
+      <h2>Introdução</h2>
+      <p>Agora que já começou a construir o documento <em>Tour_Radical</em>. Nesta aula vai finalizar esse documento.</p>
+      <p class="historia">Dez amigos milionários, cada um de um país diferente, reuniram-se em Portugal para uma aventura única: aprender Excel enquanto praticam desportos radicais ao redor do mundo. Os países são os que estão inseridos na Base de Dados.</p>
+      <p>O documento agora vai ter a ficha de cada um dos desportistas e as descrições de cada um dos países e da sua principal atração turística.</p>
+    </section>
+
+    
+    <!-- ATIVIDADE -->
+    <section id="atividade" class="card">
+      <h2>Atividade Prática</h2>
+      <ol class="checklist" id="checklist">
+        <li><label><input type="checkbox"> Abra o livro Excel <strong>Tour_Radical</strong></label></li>
+        <li><label><input type="checkbox"> Abra o documento Word <strong>Tour_Radical</strong></label></li>
+        <li><label><input type="checkbox"> Crie uma nova página a seguir à capa</label></li>
+        <li><label><input type="checkbox"> Crie nessa página uma tabela com 8 linhas e 2 colunas</label></li>
+        <li><label><input type="checkbox"> Ponha o Excel e o Word lado a lado</label></li>
+        <li><label><input type="checkbox"> Insira na tabela os dados do desportista de Portugal</label></li>
+        <li><label><input type="checkbox"> Formate essa tabela como se mostra na imagem abaixo</label></li>
+        <li><label><input type="checkbox"> Faça o mesmo para todos os desportistas e para todos os países</label></li>
+      </ol>
+      <div id="progressAtv" class="progress-inline">8 passos</div>
+    </section>
+
+    <!-- RESUMO -->
+    <section id="resumo" class="card">
+      <h2>Resumo da Aula</h2>
+      <ul class="checklist" id="resumoCheck">
+        <li><label><input type="checkbox"> Abrir os documentos Excel e Word</label></li>
+        <li><label><input type="checkbox"> Pesquisar sobre os países</label></li>
+        <li><label><input type="checkbox"> Completar o Word com todas as informações dos Amigos e dos seus países</label></li>
+      </ul>
+    </section>
+
+    <!-- TRABALHO -->
+    <section id="trabalho" class="card">
+      <h3>Trabalho – Concluir o documento Word com informações sobre os 10 amigos</h3>
+      
+      <div class="doc-structure">
+        <h4>Estrutura final esperada do Word:</h4>
+        <div class="pages"><span>Capa</span><span>Desportista – País</span><span>Portugal – País</span><span>Portugal – Atração</span><span>Igual para todos os 10 países</span></div>
+        <p></p><img class="ima" src="assets/img/doc_paises_2.jpg"/>
+      </div>
+      <div class="callout">
+      <p>Crie uma apresentação em PowerPoint com o resumo dos pontos que desenvolveu nesta aula.</p>
+      <p id="manual">Um aluno será sorteado na próxima aula para apresentar o seu trabalho à turma.</p>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+
+<script>
+
+function render(){
+  tbody.innerHTML="";
+  const f = filterInput.value.toLowerCase();
+  let visible = data.filter(d=> (d.cont+" "+d.pais+" "+d.nome).toLowerCase().includes(f));
+  visible.forEach((row,i)=>{
+    const tr=document.createElement("tr");
+    tr.innerHTML=`
+      <td><input value="${row.nome}"></td>
+      <td><input value="${row.carac}"></td>
+      <td>
+      ${getFotoHTML(row.foto)}
+  <input type="hidden" value="${row.foto}">  
+      </td>
+      <td><input value="${row.pais}"></td>
+      <td><input value="${row.cidade}"></td>
+      <td><input value="${row.fortuna}"></td>
+      <td><input value="${row.prov}"></td>
+      <td><button onclick="removeRow(${data.indexOf(row)})">✕</button></td>`;
+    // bind edits
+    [...tr.querySelectorAll("input")].forEach((inp,idx)=>{
+      inp.addEventListener("change",()=>{
+        const keys=["foto","nome","carac","cont","pais","fortuna","prov"];
+        row[keys[idx]]=inp.value;
+      })
+    })
+    tbody.appendChild(tr);
+  });
+  countEl.textContent = `${visible.length}/${data.length} registos`;
+  document.getElementById("progressAtv").textContent; // keep
+}
+window.removeRow = (idx)=>{data.splice(idx,1);render()};
+
+// Progress bar
+window.addEventListener("scroll",()=>{
+  const scrolled = window.scrollY / (document.body.scrollHeight - window.innerHeight) *100;
+  document.getElementById("progress").style.width=scrolled+"%";
+  document.querySelectorAll("section").forEach(s=>{
+    const rect=s.getBoundingClientRect();
+    if(rect.top<120 && rect.bottom>120){
+      document.querySelectorAll(".sidebar a").forEach(a=>a.classList.remove("active"));
+      const a=document.querySelector(`.sidebar a[href="#${s.id}"]`);
+      if(a) a.classList.add("active");
+    }
+  })
+});
+
+// Checklist atividade
+document.querySelectorAll("#checklist li").forEach(li=>{
+  li.addEventListener("click",(e)=>{
+    if(e.target.tagName!=="INPUT") li.classList.toggle("open");
+  })
+});
+document.querySelectorAll("#checklist input").forEach(inp=>{
+  inp.addEventListener("change",updateAtv);
+});
+function updateAtv(){
+  const total=document.querySelectorAll("#checklist input").length;
+  const done=document.querySelectorAll("#checklist input:checked").length;
+  document.getElementById("progressAtv").textContent=`${done}/${total} concluídos`;
+  if(done===total) document.getElementById("progressAtv").textContent+=" 🎉";
+}
+
+
+</script>
+</html>
