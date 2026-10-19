@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aula 4 - Tabelas e Filtros | Tour Radical</title>
+<style>
+:root{--bg:#fafaf8;--card:#fff;--border:#e8e6e1;--text:#1a1a1a;--muted:#6b6b6b;--accent:#111;--accent2:#ff5a2e;--radius:16px}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui;background:var(--bg);color:var(--text);line-height:1.6}
+#progress{position:fixed;top:0;left:0;height:3px;background:var(--accent2);width:0;z-index:100}
+.topbar{position:sticky;top:0;z-index:10;background:rgba(250,250,248,.8);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;gap:16px;align-items:center;padding:12px 24px}
+.brand{font-family:Sora;font-weight:700;font-size:12px;letter-spacing:.08em;text-transform:uppercase;opacity:.6}.title{font-family:Sora;font-weight:600}
+.layout{display:flex;max-width:1280px;margin:0 auto}.sidebar{position:sticky;top:52px;align-self:flex-start;width:210px;padding:24px 16px;display:flex;flex-direction:column;gap:8px}
+.sidebar a{padding:8px 12px;border-radius:10px;text-decoration:none;color:var(--muted);font-size:14px;font-weight:500}.sidebar a.active,.sidebar a:hover{background:var(--card);color:var(--text);border:1px solid var(--border)}
+main{flex:1;padding:24px;max-width:950px}.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px;margin-bottom:20px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.badge{display:inline-block;background:#111;color:#fff;border-radius:20px;padding:4px 12px;font-size:11px;letter-spacing:.05em;margin-bottom:12px}
+.hero h1{font-family:Sora;font-size:28px;line-height:1.25;margin:8px 0}.hero em{font-style:normal;background:linear-gradient(90deg,#ff5a2e,#ff8a2e);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.callout{background:#fff7ed;border:1px solid #ffedd5;border-radius:12px;padding:12px 16px;margin-top:16px;font-weight:500}.muted{color:var(--muted)}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.chips span{background:#f5f4f1;border:1px solid var(--border);padding:4px 10px;border-radius:20px;font-size:12px}
+.table-wrap{overflow:auto;border:1px solid var(--border);border-radius:12px}table{width:100%;border-collapse:collapse;font-size:14px}th{text-align:left;padding:10px 12px;background:#fcfbf9;border-bottom:1px solid var(--border);font-size:11px;text-transform:uppercase;letter-spacing:.05em}td{padding:8px 12px;border-bottom:1px solid #f2f0eb}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0;align-items:center}.toolbar input,.toolbar select{padding:8px 12px;border:1px solid var(--border);border-radius:10px;min-width:160px}
+button{padding:8px 14px;border-radius:10px;border:1px solid var(--border);background:var(--card);cursor:pointer;font-weight:600}button.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.checklist{list-style:none;padding:0;margin:0}.checklist li{padding:12px 0;border-bottom:1px solid #f2f0eb}.checklist .tip{font-size:12px;color:var(--muted);margin-left:28px;margin-top:4px;display:none}.checklist li.open .tip{display:block}
+code{background:#f5f4f1;padding:2px 6px;border-radius:6px;font-size:12px}.progress-inline{margin-top:12px;font-weight:600;font-size:13px}
+.filter-chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;min-height:20px}.filter-chips span{background:#111;color:#fff;padding:4px 10px;border-radius:20px;font-size:11px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.taskBtn{font-size:12px;text-align:left;background-color: #86efac;}
+.tasks{margin-top:16px;border-top:1px solid #f2f0eb;padding-top:16px}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}.ia-box{border:1px dashed var(--border);border-radius:12px;padding:16px}.ia-box textarea,.ia-box input{width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:8px;margin:6px 0 10px}.resultado{margin-top:12px;display:flex;flex-direction:column;gap:8px}.resultado .slide{border:1px solid var(--border);border-radius:10px;padding:12px;background:#fcfbf9}.resultado .slide b{display:block;font-size:11px;text-transform:uppercase;color:var(--muted)}
+.img-preview{margin-top:12px;min-height:180px;border:1px solid var(--border);border-radius:12px;display:flex;align-items:center;justify-content:center;background:#fcfbf9}.img-preview img{width:100%;height:auto;border-radius:12px}
+.pages{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}.pages span{border:1px solid var(--border);padding:6px 10px;border-radius:20px;font-size:12px;background:#fcfbf9}
+#quiz .q{margin-bottom:16px}#quiz .q p{font-weight:600}#quiz button{display:block;width:100%;text-align:left;margin:6px 0;padding:10px 12px}#quiz button.correct{background:#dcfce7;border-color:#86efac}#quiz button.wrong{background:#fee2e2;border-color:#fca5a5}
+@media(max-width:900px){.layout{flex-direction:column}.sidebar{position:static;width:auto;flex-direction:row;overflow:auto}.two-col,.grid3{grid-template-columns:1fr}}
+#manual{box-shadow: 5px 5px 20px 5px #000;text-align: center;color:red}
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+<div id="progress"></div>
+<header class="topbar"><div class="brand">Módulo 3 • Aula 4</div><div class="title">Criar Tabelas e Aplicar Filtros</div></header>
+<div class="layout">
+<nav class="sidebar">
+<a href="#objetivo" class="active">Introdução</a><a href="#basedados">Base de Dados</a><a href="#lista_tabela">Lista -> Tabela</a><a href="#atividade">Atividade</a><a href="#filtros">Filtros</a><a href="#apresentacao">Apresentação</a><a href="#resumo">Resumo & Quiz</a>
+</nav>
+<main>
+<section id="objetivo" class="card hero">
+<h2>Introdução</h2>
+<p>Depois de criar a lista com os 10 amigos milionários (cada linha = registo, cada coluna = campo), agora vai convertê-la em <strong>Tabela do Excel</strong> para poder ordenar e filtrar informações.</p>
+<div class="callout">💡 Uma Tabela no Excel ativa filtros, estilos e fórmulas estruturadas.</div>
+</section>
+
+<section id="basedados" class="card">
+<h2>Base de Dados - Tour_Radical</h2>
+<p>A Base de Dados atual tem estes campos:</p>
+<div class="chips"><span>Nome</span><span>Características</span><span>Foto</span><span>País</span><span>Cidade</span><span>Fortuna</span><span>Proveniência</span></div>
+<div class="table-wrap" style="margin-top:16px"><table><thead><tr><th>Nome</th><th>Características</th><th>País</th><th>Cidade</th><th>Fortuna</th><th>Proveniência</th></tr></thead><tbody><tr><td>Chloé "Sky" Sterling</td><td>Cabelo platinado curto, olhos azuis claros...</td><td>Austrália</td><td>Sydney</td><td>€900M</td><td>Herdeira de minas de opala</td></tr><tr><td>Tane "Manaia" Waititi</td><td>Maori com tatuagem facial tradicional...</td><td>Nova Zelândia</td><td>Auckland</td><td>€1.2B</td><td>Empresas de software IA</td></tr></tbody></table></div>
+<p>Esses campos no Excel quando preenchidos com os dados formam uma lista. Para poder trabalhar como uma Base de Dados é preciso converter a Lista em Tabela.</p>
+</section>
+
+<section id="lista_tabela" class="card">
+<h2>Converter Lista em Tabela</h2>
+<p>Converter uma lista em tabela no Excel traz várias vantagens, vai permitir criar filtros, formatações diferenciadas, referências estruturadas e atualização automática ao adicionar novos dados.</p>
+<ol>
+  <li><b>Preparar os Dados</b>
+    <ol>
+      <li>Organizar os dados em colunas com títulos (cabeçalhos) na primeira linha</li>
+      <li>Evitar linhas ou colunas em branco no meio dos dados</li>
+      <li>Certificar que cada coluna tenha apenas um tipo de informação</li>
+    </ol>
+  </li>
+  <br>
+  <li><b>Selecionar o Intervalo</b>
+    <ol>
+      <li>Clicar em qualquer célula dentro da lista</li>
+      <li>Ou selecionar manualmente todo o intervalo (ex.: A1:D20)</li>
+    </ol>
+  </li>
+  <br>
+  <li><b>Criar a Tabela</b>
+    <ol>
+      <li>Menu Inserir -> Tabela</li>
+      <li>Marcar a opção "Minha tabela tem cabeçalhos"</li>
+      <li>Clicar em OK</li>
+    </ol>
+  </li>
+  <br>
+  <li><b>Renomear a Tabela</b>
+    <ol>
+      <li>Menu Estrutura da Tabela -> Caixa de Texto</li>
+      <li>Na caixa de texto escrever o nome que queremos dar à tabela</li>
+    </ol>
+  </li>
+</ol>
+</section>
+
+<section id="atividade" class="card">
+<h2>Atividade Prática</h2>
+<ol class="checklist" id="checklist">
+<li><label><input type="checkbox"> Abrir o livro <code>Tour_Radical</code> do OneDrive</label><div class="tip">OneDrive > Tour_Radical.xlsx</div></li>
+<li><label><input type="checkbox"> Converter a Lista em Tabela e renomeie-a para <code>Tabela_Amigos</code></label><div class="tip">Seleciona A1:G11 > Inserir > Tabela > Tem cabeçalhos > Design > Nome da Tabela: Tabela_Amigos</div></li>
+<!--li><label><input type="checkbox"> Altere o estilo da tabela</label><div class="tip">Design da Tabela > Estilos > escolhe um estilo escuro com bandas</div></li-->
+<li><label><input type="checkbox"> Guardar no OneDrive</label></li>
+</ol>
+<div id="progressAtv" class="progress-inline">0/4 concluídos</div>
+</section>
+
+<section id="filtros" class="card">
+<h2>Simulador de Filtros - Tabela_Amigos</h2>
+<div class="toolbar">
+<input id="searchNome" placeholder="Filtrar por nome...">
+<select id="filtroContinente"><option value="">Todos continentes</option><option>Europa</option><option>África</option><option>Ásia</option><option>Oceania</option><option>América</option></select>
+<select id="filtroFortuna"><option value="">Todas fortunas</option><option value="1000">> €1000M</option><option value="900">> €900M</option></select>
+<select id="filtroCidade"><option value="">Todas cidades</option><option value="São Paulo">Só São Paulo</option><option value="EuropaAfrica">Europa + África</option></select>
+<select id="ordenar"><option value="">Sem ordenação</option><option value="nomeZA">Nome Z→A</option><option value="cidadeAZ">Cidade A→Z</option><option value="fortunaDesc">Fortuna mais rico → menos rico</option></select>
+<button id="limparFiltros">Limpar</button>
+<span id="count" class="muted"></span>
+</div>
+
+<div class="filter-chips" id="activeFilters"></div>
+
+<div class="table-wrap"><table id="bdTable"><thead><tr><th>Foto</th><th>Nome ↕</th><th>País</th><th>Cidade ↕</th><th>Continente</th><th>Fortuna ↕</th><th>Proveniência</th></tr></thead><tbody></tbody></table></div>
+
+<div class="tasks">
+<h4>Desafios da aula (para fazer no Excel):</h4>
+<div class="grid3">
+<button class="taskBtn" >1. Ordenar amigos Z→A</button>
+<button class="taskBtn" >2. Ordenar cidades A→Z</button>
+<button class="taskBtn" >3. Ordenar fortuna rico→pobre</button>
+<button class="taskBtn" >4. Mostrar só Europa</button>
+<button class="taskBtn" >5. Europa e África</button>
+<button class="taskBtn" >6. Quem vive em São Paulo?</button>
+<button class="taskBtn" >7. Fortuna > €1000M</button>
+<!--button class="taskBtn" data-task="nomeZA">1. Ordenar amigos Z→A</button>
+<button class="taskBtn" data-task="cidadeAZ">2. Ordenar cidades A→Z</button>
+<button class="taskBtn" data-task="fortunaDesc">3. Ordenar fortuna rico→pobre</button>
+<button class="taskBtn" data-task="europa">4. Mostrar só Europa</button>
+<button class="taskBtn" data-task="europaAfrica">5. Europa e África</button>
+<button class="taskBtn" data-task="saoPaulo">6. Quem vive em São Paulo?</button>
+<button class="taskBtn" data-task="milMilhoes">7. Fortuna > €1000M</button-->
+</div>
+</div>
+</section>
+
+<section id="apresentacao" class="card">
+<h2>Criar Apresentação para a próxima aula</h2>
+<div class="two-col">
+<div class="ia-box">
+<h3>1. PowerPoint</h3>
+<label>Desenvolva uma apresentação no PowerPoint sobre como criar uma Tabela no Excel e como aplicar filtros para ordenar e filtrar dados. A apresentação deve ter 5 diapositivos e a Tabela do Excel trata de 5 amigos e tem os campos nome, continente, cidade e fortuna.</label>
+
+<!--button id="gerarPPT" class="primary">Gerar apresentação</button-->
+<div id="previewPPT" class="resultado"></div>
+</div>
+<div class="ia-box">
+<h3>2. Microsoft Designer - Imagem</h3>
+<label>Crie uma imagem de um aluno a apresentar uma tabela no excel de frente para um écran gigante.</label>
+<!--textarea id="promptImg" rows="3">Crie uma imagem de um aluno a apresentar uma tabela no excel de frente para um écran gigante.</textarea>
+<button id="gerarImg" class="primary">Gerar imagem</button>
+<div id="previewImg" class="img-preview"><div class="placeholder">🖼️ A imagem gerada aparecerá aqui</div></div>
+<small class="muted">Designer > Imagens > Download > Inserir no PowerPoint</small-->
+</div>
+</div>
+<div class="doc-structure"><h4>Guardar na pasta do OneDrive com o nome "Lista_Tabela_Excel.pptx"</h4></div>
+<p id="manual">Um aluno será sorteado na próxima aula para apresentar o seu trabalho à turma.</p>
+</section>
+
+<section id="resumo" class="card">
+<h2>Resumo & Quiz</h2>
+<ul class="checklist" id="resumoCheck"><li><label><input type="checkbox"> Transformar Lista em Tabela no Excel (Tabela_Amigos)</label></li><li><label><input type="checkbox"> Ordenar por nome, cidade e fortuna</label></li><li><label><input type="checkbox"> Filtrar por continente e por valor</label></li><li><label><input type="checkbox"> Criar apresentação Lista_Tabela_Excel no PowerPoint</label></li></ul>
+<div id="confetti"></div>
+<h3 style="margin-top:28px">Mini Quiz</h3><div id="quiz"></div>
+</section>
+</main>
+</div>
+
+<script>
+    const initialData = [
+{foto:"assets/fotos/chloe.png",nome:"Chloé \"Sky\" Sterling",pais:"Austrália",cidade:"Sydney",cont:"Oceania",fortuna:900,prov:"Opala",carac:"Ginasta"},
+{foto:"assets/fotos/tane.png",nome:"Tane \"Manaia\" Waititi",pais:"Nova Zelândia",cidade:"Auckland",cont:"Oceânia",fortuna:1200,prov:"Inteligencia Artificial",carac:"Maori tatuagem"},
+{foto:"assets/fotos/jacques.png",nome:"Jaques LaRue",pais:"Canadá",cidade:"Toronto",fortuna:850,cont:"America",prov:"Madeiras",carac:"Barba Ruiva"},
+{foto:"assets/fotos/ana.png",nome:"Ana Silva",pais:"Brasil",cidade:"São Paulo",cont:"América",fortuna:1500,prov:"Nóbio",carac:"Cabelos Negros"},
+{foto:"assets/fotos/khalid.png",nome:"Khalid Al-Fayed",pais:"Emirados Árabes Unidos",cidade:"Dubai",cont:"Ásia",fortuna:3200,prov:"Petróleo",carac:"Óculos de ouro"},
+{foto:"assets/fotos/yuki.png",nome:"Yuki Tanaka",pais:"Japão",cidade:"Tóquio",cont:"Ásia",fortuna:1700,prov:"Mangá",carac:"Cabelo Roxo"},
+{foto:"assets/fotos/amir.png",nome:"Amir Hassan",pais:"Egito",cidade:"Cairo",cont:"África",fortuna:1100,prov:"Turismo",carac:"Bronzeado"},
+{foto:"assets/fotos/naledi.png",nome:"Naledi Bhengu",pais:"África do Sul",cidade:"Joanesburgo",cont:"África",fortuna:950,prov:"Diamantes",carac:"Cabelos com Rastas"},
+{foto:"assets/fotos/klaus.png",nome:"Klaus Richter",pais:"Suíça",cidade:"Zurique",cont:"Europa",fortuna:2000,prov:"Relógios",carac:"Cabelo Grisalho"},
+{foto:"assets/fotos/joao.png",nome:"João Monteiro",pais:"Portugal",cidade:"Lisboa",cont:"Europa",fortuna:800,prov:"Cortiça",carac:"Olhos Verdes"},
+];
+
+let data = [...initialData];
+let currentFilters = {};
+
+const tbody = document.querySelector("#bdTable tbody");
+const countEl = document.getElementById("count");
+const searchNome = document.getElementById("searchNome");
+const filtroCont = document.getElementById("filtroContinente");
+const filtroFort = document.getElementById("filtroFortuna");
+const filtroCidade = document.getElementById("filtroCidade");
+const ordenar = document.getElementById("ordenar");
+const activeFiltersEl = document.getElementById("activeFilters");
+
+function getFotoHTML(foto){
+  if(!foto) return "❓";
+  if(foto.includes("/") || foto.includes(".png") || foto.includes(".jpg")){
+    return `<img src="${foto}" alt="" style="width:36px;height:36px;object-fit:cover;border-radius:8px;" onerror="this.replaceWith(document.createTextNode('🖼️'))">`;
+  }
+  return `<span style="font-size:22px">${foto}</span>`;
+}
+
+function applyFilters(){
+  let filtered = [...initialData];
+  currentFilters = {};
+
+  if(searchNome.value){
+    filtered = filtered.filter(d=>d.nome.toLowerCase().includes(searchNome.value.toLowerCase()));
+    currentFilters["Nome: "+searchNome.value]=true;
+  }
+  if(filtroCont.value){
+    filtered = filtered.filter(d=>d.cont===filtroCont.value);
+    currentFilters["Continente: "+filtroCont.value]=true;
+  }
+  if(filtroFort.value){
+    const v = parseInt(filtroFort.value);
+    filtered = filtered.filter(d=>d.fortuna>v);
+    currentFilters["Fortuna > "+v+"M"]=true;
+  }
+  if(filtroCidade.value){
+    if(filtroCidade.value==="São Paulo"){
+      filtered = filtered.filter(d=>d.cidade==="São Paulo");
+      currentFilters["Cidade: São Paulo"]=true;
+    } else if(filtroCidade.value==="EuropaAfrica"){
+      filtered = filtered.filter(d=>["Europa","África"].includes(d.cont));
+      currentFilters["Europa + África"]=true;
+    }
+  }
+
+  if(ordenar.value==="nomeZA"){
+    filtered.sort((a,b)=>b.nome.localeCompare(a.nome));
+    currentFilters["Ordenar: Nome Z→A"]=true;
+  } else if(ordenar.value==="cidadeAZ"){
+    filtered.sort((a,b)=>a.cidade.localeCompare(b.cidade));
+    currentFilters["Ordenar: Cidade A→Z"]=true;
+  } else if(ordenar.value==="fortunaDesc"){
+    filtered.sort((a,b)=>b.fortuna-a.fortuna);
+    currentFilters["Ordenar: Fortuna rico→pobre"]=true;
+  }
+
+  data = filtered;
+  render();
+}
+
+function render(){
+  tbody.innerHTML="";
+  data.forEach(row=>{
+    const tr=document.createElement("tr");
+    tr.innerHTML=`
+      <td>${getFotoHTML(row.foto)}</td>
+      <td><strong>${row.nome}</strong><br><small style="color:#6b6b6b">${row.carac||""}</small></td>
+      <td>${row.pais}</td>
+      <td>${row.cidade}</td>
+      <td>${row.cont}</td>
+      <td>€${row.fortuna}M</td>
+      <td><small>${row.prov}</small></td>`;
+    tbody.appendChild(tr);
+  });
+  countEl.textContent = `${data.length}/${initialData.length} registos`;
+  activeFiltersEl.innerHTML = Object.keys(currentFilters).map(k=>`<span>${k}</span>`).join("");
+}
+
+searchNome.oninput=applyFilters;
+filtroCont.onchange=applyFilters;
+filtroFort.onchange=applyFilters;
+filtroCidade.onchange=applyFilters;
+ordenar.onchange=applyFilters;
+document.getElementById("limparFiltros").onclick=()=>{
+  searchNome.value=""; filtroCont.value=""; filtroFort.value=""; filtroCidade.value=""; ordenar.value="";
+  applyFilters();
+};
+
+document.querySelectorAll(".taskBtn").forEach(btn=>{
+  btn.onclick=()=>{
+    const t=btn.dataset.task;
+    // reset
+    searchNome.value=""; filtroCont.value=""; filtroFort.value=""; filtroCidade.value=""; ordenar.value="";
+    if(t==="nomeZA") ordenar.value="nomeZA";
+    if(t==="cidadeAZ") ordenar.value="cidadeAZ";
+    if(t==="fortunaDesc") ordenar.value="fortunaDesc";
+    if(t==="europa") filtroCont.value="Europa";
+    if(t==="europaAfrica") filtroCidade.value="EuropaAfrica";
+    if(t==="saoPaulo") filtroCidade.value="São Paulo";
+    if(t==="milMilhoes") filtroFort.value="1000";
+    applyFilters();
+  };
+});
+
+render();
+
+// Checklist
+document.querySelectorAll("#checklist li").forEach(li=>{
+  li.addEventListener("click",(e)=>{ if(e.target.tagName!=="INPUT") li.classList.toggle("open"); })
+});
+document.querySelectorAll("#checklist input").forEach(inp=>{ inp.addEventListener("change",updateAtv); });
+function updateAtv(){
+  const total=document.querySelectorAll("#checklist input").length;
+  const done=document.querySelectorAll("#checklist input:checked").length;
+  document.getElementById("progressAtv").textContent=`${done}/${total} concluídos`+(done===total?" 🎉":"");
+}
+
+// PPT generator mock
+/*document.getElementById("gerarPPT").onclick=()=>{
+  const out=document.getElementById("previewPPT");
+  out.innerHTML=`
+    <div class="slide"><b>Slide 1 - Capa</b> Como Criar Tabelas e Filtros no Excel<br><small>Tour_Radical - Tabela_Amigos</small></div>
+    <div class="slide"><b>Slide 2 - Criar Tabela</b> Selecionar A1:G11 > Inserir > Tabela > Nome: Tabela_Amigos > Estilo</div>
+    <div class="slide"><b>Slide 3 - Ordenar</b> Dados > Ordenar Z→A por Nome, A→Z por Cidade, Maior→Menor por Fortuna</div>
+    <div class="slide"><b>Slide 4 - Filtrar</b> Filtro por Continente (Europa), Filtro por Fortuna >1000M, Filtro por Cidade São Paulo</div>
+    <div class="slide"><b>Slide 5 - Conclusão</b> Tabelas facilitam análise. Guardar como Filtros_Excel.pptx no OneDrive</div>
+  `;
+};
+
+// Img generator mock
+document.getElementById("gerarImg").onclick=()=>{
+  const out=document.getElementById("previewImg");
+  out.innerHTML=`<div style="padding:16px;text-align:center"><div style="font-size:48px">🧑‍🏫📊</div><p><strong>Aluno a apresentar tabela Excel</strong><br>em frente a ecrã gigante com Tabela_Amigos</p><small style="color:#6b6b6b">Imagem gerada por IA - Microsoft Designer<br>Prompt: ${document.getElementById("promptImg").value}</small></div>`;
+};*/
+
+// Progress
+window.addEventListener("scroll",()=>{
+  const scrolled=window.scrollY/(document.body.scrollHeight-window.innerHeight)*100;
+  document.getElementById("progress").style.width=scrolled+"%";
+  document.querySelectorAll("section").forEach(s=>{
+    const rect=s.getBoundingClientRect();
+    if(rect.top<120 && rect.bottom>120){
+      document.querySelectorAll(".sidebar a").forEach(a=>a.classList.remove("active"));
+      const a=document.querySelector(`.sidebar a[href="#${s.id}"]`);
+      if(a) a.classList.add("active");
+    }
+  })
+});
+
+// Quiz
+const quizData=[
+{q:"Como se chama a tabela que devemos criar?",opts:["Tabela1","Tabela_Amigos","Amigos"],a:1},
+{q:"Para mostrar só Europa, que filtro usas?",opts:["Filtrar por Cidade","Filtrar por Continente = Europa","Ordenar A→Z"],a:1},
+{q:"Fortuna > 1000M significa:",opts:["Menos de 1000","Mais de 1000 milhões","Igual a 1000"],a:1},
+{q:"Como guardar a apresentação?",opts:["No ambiente de trabalho","OneDrive como Lista_Tabela_Excel","No WhatsApp"],a:1},
+];
+const quizEl=document.getElementById("quiz");
+quizData.forEach((item,idx)=>{
+  const div=document.createElement("div"); div.className="q";
+  div.innerHTML=`<p>${idx+1}. ${item.q}</p>`;
+  item.opts.forEach((opt,i)=>{
+    const b=document.createElement("button"); b.textContent=opt;
+    b.onclick=()=>{
+      [...div.querySelectorAll("button")].forEach(x=>x.disabled=true);
+      if(i===item.a){b.classList.add("correct")} else {b.classList.add("wrong"); div.querySelectorAll("button")[item.a].classList.add("correct");}
+    };
+    div.appendChild(b);
+  });
+  quizEl.appendChild(div);
+});
+
+document.querySelectorAll("#resumoCheck input").forEach(i=>{
+  i.addEventListener("change",()=>{
+    if([...document.querySelectorAll("#resumoCheck input")].every(x=>x.checked)){
+      document.getElementById("confetti").innerHTML="🎉 Completaste a Aula! Parabéns 🎉";
+    }
+  })
+});
+
+</script>
+</body>
+</html>
