@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aula 5 - Funções Básicas SOMA, MÉDIA, MÁXIMO, MÍNIMO</title>
+<style>
+:root{--bg:#fafaf8;--card:#fff;--border:#e8e6e1;--text:#1a1a1a;--muted:#6b6b6b;--accent:#111;--accent2:#16a34a;--radius:16px}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui;background:var(--bg);color:var(--text);line-height:1.6}
+#progress{position:fixed;top:0;left:0;height:3px;background:var(--accent2);width:0;z-index:100}
+.topbar{position:sticky;top:0;z-index:10;background:rgba(250,250,248,.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;gap:16px;align-items:center;padding:12px 24px}
+.brand{font-family:Sora;font-weight:700;font-size:11px;letter-spacing:.08em;text-transform:uppercase;opacity:.6}.title{font-family:Sora;font-weight:600;font-size:14px}
+.layout{display:flex;max-width:1280px;margin:0 auto}.sidebar{position:sticky;top:52px;align-self:flex-start;width:220px;padding:24px 16px;display:flex;flex-direction:column;gap:6px}
+.sidebar a{padding:8px 12px;border-radius:10px;text-decoration:none;color:var(--muted);font-size:13px;font-weight:500}.sidebar a.active,.sidebar a:hover{background:var(--card);color:var(--text);border:1px solid var(--border)}
+main{flex:1;padding:24px;max-width:960px}.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px;margin-bottom:20px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.badge{display:inline-block;background:#16a34a;color:#fff;border-radius:20px;padding:4px 12px;font-size:11px;margin-bottom:12px}
+.hero h1{font-family:Sora;font-size:26px;line-height:1.2;margin:8px 0}.hero em{color:var(--accent2);font-style:normal}
+.callout{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:12px 16px;margin-top:16px;font-weight:500}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:12px}.formula{border:1px solid var(--border);border-radius:12px;padding:12px;text-align:center}.formula b{display:block;font-size:15px}.formula small{color:var(--muted);font-size:11px;display:block;margin:4px 0}.formula code{background:#f5f4f1;padding:2px 6px;border-radius:6px;font-size:11px}
+.tip-box{margin-top:12px;background:#fff7ed;border:1px solid #ffedd5;border-radius:10px;padding:10px 12px;font-size:13px}
+.mini{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px}.mini th,.mini td{border:1px solid var(--border);padding:6px 8px;text-align:left}.mini th{background:#fcfbf9}
+.checklist{list-style:none;padding:0;margin:0}.checklist li{padding:10px 0;border-bottom:1px solid #f2f0eb}.checklist .tip{font-size:12px;color:var(--muted);margin-left:28px;margin-top:4px;display:none}.checklist li.open .tip{display:block}
+code{background:#f5f4f1;padding:2px 6px;border-radius:6px;font-size:12px}.progress-inline{margin-top:12px;font-weight:600;font-size:13px}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0;align-items:center}.toolbar input{padding:8px 12px;border:1px solid var(--border);border-radius:10px;min-width:180px}
+button{padding:8px 14px;border-radius:10px;border:1px solid var(--border);background:var(--card);cursor:pointer;font-weight:600}button.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.table-wrap{overflow:auto;border:1px solid var(--border);border-radius:12px}table{width:100%;border-collapse:collapse;font-size:14px}th{text-align:left;padding:10px 12px;background:#fcfbf9;border-bottom:1px solid var(--border);font-size:11px;text-transform:uppercase}td{padding:8px 12px;border-bottom:1px solid #f2f0eb}td input{width:100%;border:1px solid #eee;border-radius:6px;padding:4px 6px}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:16px}.stat{border:1px solid var(--border);border-radius:12px;padding:12px;background:#fff}.stat.highlight{background:#f0fdf4;border-color:#bbf7d0}.stat b{display:block;font-size:11px;text-transform:uppercase;color:var(--muted)}.stat span{font-size:22px;font-weight:700;display:block;margin:4px 0}.stat code{font-size:10px}
+.formula-help{margin-top:16px;background:#f8fafc;border:1px solid var(--border);border-radius:10px;padding:12px}.formula-help pre{margin:0;font-size:12px;white-space:pre-wrap}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}.ia-box{border:1px dashed var(--border);border-radius:12px;padding:16px}.ia-box textarea{width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:8px;margin:6px 0 10px;height:110px}
+.resultado{margin-top:12px;display:flex;flex-direction:column;gap:8px}.resultado .slide{border:1px solid var(--border);border-radius:10px;padding:12px;background:#fcfbf9}.resultado .slide b{display:block;font-size:11px;text-transform:uppercase;color:var(--muted)}
+.img-preview{margin-top:12px;min-height:160px;border:1px solid var(--border);border-radius:12px;display:flex;align-items:center;justify-content:center;background:#fcfbf9}.pages{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}.pages span{border:1px solid var(--border);padding:6px 10px;border-radius:20px;font-size:12px;background:#fcfbf9}
+.muted{color:var(--muted)}#quiz .q{margin-bottom:16px}#quiz .q p{font-weight:600}#quiz button{display:block;width:100%;text-align:left;margin:6px 0;padding:10px 12px}#quiz button.correct{background:#dcfce7;border-color:#86efac}#quiz button.wrong{background:#fee2e2;border-color:#fca5a5}
+@media(max-width:900px){.layout{flex-direction:column}.sidebar{position:static;width:auto;flex-direction:row;overflow:auto}.two-col,.grid4,.stats-grid{grid-template-columns:1fr 1fr}}
+#manual{box-shadow: 5px 5px 20px 5px #000;text-align: center;color:red}
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+<div id="progress"></div>
+<header class="topbar"><div class="brand">Módulo 3 • Aula 5</div><div class="title">Funções Básicas – SOMA, MÉDIA, MÁXIMO, MÍNIMO</div></header>
+<div class="layout">
+<nav class="sidebar">
+<a href="#objetivo" class="active">Introdução</a><a href="#formulas">Fórmulas</a><a href="#basedados">Base de Dados</a><a href="#atividade">Atividade</a><a href="#estatisticas">Estatísticas</a><a href="#apresentacao">Apresentação</a><a href="#resumo">Resumo & Quiz</a>
+</nav>
+<main>
+<section id="objetivo" class="card hero">
+<h2>Introdução</h2>
+<p>Agora na Base de Dados <em>Tabela_Amigos</em> vai acrescentar mais dois campos: <strong>Data de Nascimento</strong> e <strong>Idade</strong> e usar <code>SOMA</code>, <code>MÉDIA</code>, <code>MÁXIMO</code>, <code>MÍNIMO</code> para fazer análises estatísticas rápidas e relembrar funções do Excel.</p>
+<div class="callout">💡 No Excel as funções poupam horas de cálculo manual.</div>
+</section>
+
+<section id="formulas" class="card">
+<h2>Fórmulas a usar</h2>
+<div class="grid4">
+<div class="formula"><b>=SOMA(F2:F6)</b><small>Soma valores do intervalo</small></div>
+<div class="formula"><b>=MÉDIA(F2:F6)</b><small>Média aritmética</small></div>
+<div class="formula"><b>=MÁXIMO(F2:F6)</b><small>Maior valor</small></div>
+<div class="formula"><b>=MÍNIMO(F2:F6)</b><small>Menor valor</small></div>
+</div>
+</section>
+
+<section id="basedados" class="card">
+<h2>Dados Novos -> Data de Nascimento | Idade</h2>
+<p>Adicione estes campos no final da Tabela_Amigos:</p>
+<table class="mini"><thead><tr><th>Nome</th><th>Data Nascimento</th><th>Idade</th></tr></thead><tbody>
+<tr><td>Chloé</td><td>12/03/2005</td><td></td></tr><tr><td>Tane</td><td>28/07/2003</td><td></td></tr><tr><td>Jacques</td><td>05/11/1998</td><td></td></tr><tr><td>Ana</td><td>16/06/2004</td><td></td></tr><tr><td>Khalid</td><td>22/01/2001</td><td></td></tr><tr><td>Yuki</td><td>30/04/1997</td><td></td></tr><tr><td>Amir</td><td>18/12/2000</td><td></td></tr><tr><td>Naledi</td><td>03/08/1994</td><td></td></tr><tr><td>Klaus</td><td>25/05/1982</td><td></td></tr><tr><td>João</td><td>14/06/2003</td><td></td></tr>
+</tbody></table>
+<div class="tip-box">Dica: Idade no Excel → <code>=INT((HOJE()-DataNasc)/365,25)</code> ou <code>=DATADIF(DataNasc;HOJE();"Y")</code></div>
+</section>
+
+<section id="atividade" class="card">
+<h2>Atividade Prática no Excel</h2>
+<ol class="checklist" id="checklist">
+<li><label><input type="checkbox"> Abra o livro <code>Tour_Radical</code> e selecione <code>Tabela_Amigos</code></label></li>
+<li><label><input type="checkbox"> Acrescente campos <code>Data de Nascimento</code> e <code>Idade</code> no final</label><div class="tip">Clique na última coluna > Escreve novo cabeçalho, a tabela expande automaticamente</div></li>
+<li><label><input type="checkbox"> Preencha as datas de nascimento (lista acima)</label></li>
+<li><label><input type="checkbox"> No campo Idade escreva fórmula de cálculo (pergunte no LMArena)</label><div class="tip">Ex: =INT((HOJE()-F2)/365,25) ou =DATADIF(F2;HOJE();"Y")</div></li>
+<li><label><input type="checkbox"> Guarde no OneDrive</label></li>
+</ol>
+<div id="progressAtv" class="progress-inline">0/5 concluídos</div>
+</section>
+
+<section id="estatisticas" class="card">
+<h2>Simulador - Calcular Estatísticas</h2>
+<p>Simule aqui antes de fazer no Excel. Altere as datas e veja a idade e as estatísticas atualizarem.</p>
+<div class="toolbar">
+<input id="search" placeholder="Filtrar por nome...">
+<!--button id="recalc" class="primary">Recalcular Idades</button-->
+<span id="count" class="muted"></span>
+</div>
+<div class="table-wrap"><table id="bdTable"><thead><tr><th>Foto</th><th>Nome</th><th>Data Nasc.</th><th>Idade</th><th>Fortuna (M€)</th></tr></thead><tbody></tbody></table></div>
+
+<div class="stats-grid">
+<div class="stat"><b>Soma Idades</b><span id="somaIdade">-</span><code>=SOMA(D2:D11)</code></div>
+<div class="stat"><b>Média Idades</b><span id="mediaIdade">-</span><code>=MÉDIA(D2:D11)</code></div>
+<div class="stat"><b>Idade Maior</b><span id="maxIdade">-</span><code>=MÁXIMO(D2:D11)</code></div>
+<div class="stat"><b>Idade Menor</b><span id="minIdade">-</span><code>=MÍNIMO(D2:D11)</code></div>
+<div class="stat highlight"><b>Soma Fortunas</b><span id="somaFort">-</span><code>=SOMA(E2:E11)</code></div>
+<div class="stat highlight"><b>Média Fortunas</b><span id="mediaFort">-</span><code>=MÉDIA(E2:E11)</code></div>
+<div class="stat highlight"><b>Maior Fortuna</b><span id="maxFort">-</span><code>=MÁXIMO(E2:E11)</code></div>
+<div class="stat highlight"><b>Menor Fortuna</b><span id="minFort">-</span><code>=MÍNIMO(E2:E11)</code></div>
+</div>
+
+<div class="formula-help">
+<h4>Como o Excel calcula?</h4>
+<pre id="formulaLog">Fórmula Idade: =INT((HOJE() - DataNasc)/365,25)
+Exemplo: Chloé 12/03/2005 → =INT((HOJE()-"12/03/2005")/365,25)</pre>
+</div>
+</section>
+
+<section id="apresentacao" class="card">
+<h2>Criar Apresentação para a próxima aula</h2>
+<div class="two-col">
+<div class="ia-box">
+<h3>1 - PowerPoint</h3>
+<label>Prompt do documento:</label>
+<p>Desenvolva uma apresentação para o powerpoint sobre como como aplicar as fórmulas básicas do excel. A apresentação deve ter 5 diapositivos e a tabela do excel trata de 5 amigos e tem os campos nome, data de nascimento, idade e fortuna</p>
+<!--button id="gerarPPT" class="primary">Gerar apresentação</button>
+<div id="previewPPT" class="resultado"></div-->
+</div>
+<div class="ia-box">
+<h3>2- Microsoft Designer - Imagem</h3>
+<p id="promptImg">Crie uma imagem de uma tabela excel com fórmulas SOMA, MÉDIA, MÁXIMO e MÍNIMO destacadas, estilo tecnológico</p>
+<!--button id="gerarImg" class="primary">Gerar imagem</button>
+<div id="previewImg" class="img-preview"><div class="placeholder">🖼️ Imagem aparecerá aqui</div></div-->
+</div>
+</div>
+<div class="doc-structure"><h4>Guardar na pasta do OneDrive com o nome "Funcoes_Basicas_Excel.pptx"</h4></div>
+<p id="manual">Um aluno será sorteado na próxima aula para apresentar o seu trabalho à turma.</p>
+
+</section>
+
+<section id="resumo" class="card">
+<h2>Resumo & Quiz</h2>
+<ul class="checklist" id="resumoCheck"><li><label><input type="checkbox"> Adicionar Data Nascimento e Idade à Tabela_Amigos</label></li><li><label><input type="checkbox"> Calcular Idade com HOJE() e DATADIF</label></li><li><label><input type="checkbox"> Usar SOMA, MÉDIA, MÁXIMO, MÍNIMO para idades</label></li><li><label><input type="checkbox"> Usar SOMA, MÉDIA, MÁXIMO, MÍNIMO para fortunas</label></li><li><label><input type="checkbox"> Criar apresentação de 5 diapositivos</label></li></ul>
+<div id="confetti"></div>
+<h3 style="margin-top:24px">Mini Quiz</h3><div id="quiz"></div>
+</section>
+</main>
+</div>
+<script>
+    const initialData = [
+{foto:"assets/fotos/chloe.png",nome:"Chloé",data:"2005-03-12",fortuna:900},
+{foto:"assets/fotos/tane.png",nome:"Tane",data:"2003-07-28",fortuna:1200},
+{foto:"assets/fotos/jacques.png",nome:"Jacques",data:"1998-11-05",fortuna:750},
+{foto:"assets/fotos/ana.png",nome:"Ana",data:"2004-06-16",fortuna:620},
+{foto:"assets/fotos/khalid.png",nome:"Khalid",data:"2001-01-22",fortuna:1100},
+{foto:"assets/fotos/yuki.png",nome:"Yuki",data:"1997-04-30",fortuna:1500},
+{foto:"assets/fotos/amir.png",nome:"Amir",data:"2000-12-18",fortuna:800},
+{foto:"assets/fotos/naledi.png",nome:"Naledi",data:"1994-08-03",fortuna:850},
+{foto:"assets/fotos/klaus.png",nome:"Klaus",data:"1982-05-25",fortuna:2500},
+{foto:"assets/fotos/joao.png",nome:"João",data:"2003-06-14",fortuna:720},
+];
+
+function calcIdade(dateStr){
+  const hoje = new Date();
+  const nasc = new Date(dateStr);
+  let idade = hoje.getFullYear() - nasc.getFullYear();
+  const m = hoje.getMonth() - nasc.getMonth();
+  if(m<0 || (m===0 && hoje.getDate() < nasc.getDate())) idade--;
+  return idade;
+}
+
+let data = initialData.map(d=>({...d, idade: calcIdade(d.data)}));
+
+const tbody = document.querySelector("#bdTable tbody");
+const countEl = document.getElementById("count");
+const searchEl = document.getElementById("search");
+
+function getFotoHTML(foto){
+  if(!foto) return "❓";
+  if(foto.includes("/") || foto.includes(".png")) return `<img src="${foto}" style="width:32px;height:32px;object-fit:cover;border-radius:8px" onerror="this.replaceWith(document.createTextNode('🖼️'))">`;
+  return foto;
+}
+
+function render(){
+  tbody.innerHTML="";
+  let filtered = data;
+  const f = searchEl.value.toLowerCase();
+  if(f) filtered = filtered.filter(d=>d.nome.toLowerCase().includes(f));
+
+  filtered.forEach(row=>{
+    const tr=document.createElement("tr");
+    tr.innerHTML=`
+      <td>${getFotoHTML(row.foto)}</td>
+      <td><strong>${row.nome}</strong></td>
+      <td><input type="date" value="${row.data}" data-nome="${row.nome}"></td>
+      <td><strong>${row.idade}</strong> anos</td>
+      <td>€${row.fortuna}M</td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  // bind date change
+  tbody.querySelectorAll('input[type="date"]').forEach(inp=>{
+    inp.addEventListener("change",()=>{
+      const nome = inp.dataset.nome;
+      const item = data.find(d=>d.nome===nome);
+      if(item){ item.data = inp.value; item.idade = calcIdade(inp.value); renderStats(); render(); }
+    });
+  });
+
+  countEl.textContent = `${filtered.length}/${data.length} registos`;
+  renderStats(filtered);
+}
+
+function renderStats(list){
+  const arr = list || data;
+  const idades = arr.map(d=>d.idade);
+  const forts = arr.map(d=>d.fortuna);
+  const sum = (a)=>a.reduce((x,y)=>x+y,0);
+  const avg = (a)=>a.length? (sum(a)/a.length).toFixed(1):0;
+
+  document.getElementById("somaIdade").textContent = sum(idades) + " anos";
+  document.getElementById("mediaIdade").textContent = avg(idades) + " anos";
+  document.getElementById("maxIdade").textContent = Math.max(...idades) + " anos";
+  document.getElementById("minIdade").textContent = Math.min(...idades) + " anos";
+
+  document.getElementById("somaFort").textContent = "€" + sum(forts) + "M";
+  document.getElementById("mediaFort").textContent = "€" + avg(forts) + "M";
+  document.getElementById("maxFort").textContent = "€" + Math.max(...forts) + "M";
+  document.getElementById("minFort").textContent = "€" + Math.min(...forts) + "M";
+
+  document.getElementById("formulaLog").textContent = `Fórmula Idade: =INT((HOJE() - DataNasc)/365,25)
+Exemplo atualizado: Hoje = ${new Date().toLocaleDateString("pt-PT")}
+${arr.map(d=>`${d.nome} ${d.data} → ${d.idade} anos`).join("\n")}`;
+}
+
+/*document.getElementById("recalc").onclick=()=>{
+  data = data.map(d=>({...d, idade: calcIdade(d.data)}));
+  render();
+};*/
+
+searchEl.oninput=render;
+render();
+
+// Checklist
+document.querySelectorAll("#checklist li").forEach(li=>{
+  li.addEventListener("click",(e)=>{ if(e.target.tagName!=="INPUT") li.classList.toggle("open"); })
+});
+document.querySelectorAll("#checklist input").forEach(inp=>{ inp.addEventListener("change",updateAtv); });
+function updateAtv(){
+  const total=document.querySelectorAll("#checklist input").length;
+  const done=document.querySelectorAll("#checklist input:checked").length;
+  document.getElementById("progressAtv").textContent=`${done}/${total} concluídos`+(done===total?" 🎉":"");
+}
+
+// PPT mock
+/*document.getElementById("gerarPPT").onclick=()=>{
+  const out=document.getElementById("previewPPT");
+  out.innerHTML=`
+    <div class="slide"><b>Slide 1 - Capa</b> Funções Básicas no Excel - SOMA, MÉDIA, MÁXIMO, MÍNIMO<br><small>Tour_Radical - Tabela_Amigos</small></div>
+    <div class="slide"><b>Slide 2 - Adicionar Campos</b> Como adicionar Data Nascimento e Idade<br>Código: =DATADIF(F2;HOJE();"Y")</div>
+    <div class="slide"><b>Slide 3 - SOMA e MÉDIA</b> =SOMA(D2:D11) soma idades<br>=MÉDIA(E2:E11) média fortunas</div>
+    <div class="slide"><b>Slide 4 - MÁXIMO e MÍNIMO</b> =MÁXIMO(D2:D11) idade maior<br>=MÍNIMO(E2:E11) menor fortuna</div>
+    <div class="slide"><b>Slide 5 - Conclusão</b> Funções permitem análise rápida. Guardar como Funcoes_Basicas.pptx</div>
+  `;
+};
+document.getElementById("gerarImg").onclick=()=>{
+  document.getElementById("previewImg").innerHTML=`<div style="padding:16px;text-align:center"><div style="font-size:40px">📊🧮</div><p><strong>Tabela Excel com fórmulas destacadas</strong><br>SOMA, MÉDIA, MÁXIMO, MÍNIMO</p></div>`;
+};
+*/
+// Scroll progress
+window.addEventListener("scroll",()=>{
+  const scrolled=window.scrollY/(document.body.scrollHeight-window.innerHeight)*100;
+  document.getElementById("progress").style.width=scrolled+"%";
+  document.querySelectorAll("section").forEach(s=>{
+    const rect=s.getBoundingClientRect();
+    if(rect.top<120 && rect.bottom>120){
+      document.querySelectorAll(".sidebar a").forEach(a=>a.classList.remove("active"));
+      const a=document.querySelector(`.sidebar a[href="#${s.id}"]`);
+      if(a) a.classList.add("active");
+    }
+  })
+});
+
+// Quiz
+const quizData=[
+{q:"Qual fórmula calcula a idade?",opts:["=SOMA(Data)","=DATADIF(DataNasc;HOJE();\"Y\")","=MÉDIA(Data)"],a:1},
+{q:"SOMA serve para:",opts:["Somar valores","Calcular média","Achar o maior"],a:0},
+{q:"MÁXIMO devolve:",opts:["O menor valor","O maior valor","A soma"],a:1},
+{q:"MÉDIA das fortunas usa:",opts:["=MÉDIA(E2:E11)","=SOMA(E2:E11)","=MÍNIMO(E2:E11)"],a:0},
+];
+const quizEl=document.getElementById("quiz");
+quizData.forEach((item,idx)=>{
+  const div=document.createElement("div"); div.className="q";
+  div.innerHTML=`<p>${idx+1}. ${item.q}</p>`;
+  item.opts.forEach((opt,i)=>{
+    const b=document.createElement("button"); b.textContent=opt;
+    b.onclick=()=>{
+      [...div.querySelectorAll("button")].forEach(x=>x.disabled=true);
+      if(i===item.a){b.classList.add("correct")} else {b.classList.add("wrong"); div.querySelectorAll("button")[item.a].classList.add("correct");}
+    };
+    div.appendChild(b);
+  });
+  quizEl.appendChild(div);
+});
+document.querySelectorAll("#resumoCheck input").forEach(i=>{
+  i.addEventListener("change",()=>{
+    if([...document.querySelectorAll("#resumoCheck input")].every(x=>x.checked)){
+      document.getElementById("confetti").innerHTML="🎉 Aula 4 concluída! Estatísticas calculadas! 🎉";
+    }
+  })
+});
+
+</script>
+</body>
+</html>
